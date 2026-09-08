@@ -1,0 +1,41 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    // Helper function: Check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Helper function: Check if request is made by the owner of the UID path
+    function isOwner(uid) {
+      return isAuthenticated() && request.auth.uid == uid;
+    }
+    
+    // Helper function: Validate image content type (JPEG or PNG)
+    function isSupportedImageType() {
+      return request.resource.contentType.matches('image/(jpeg|png)');
+    }
+    
+    // Helper function: Validate image size (Maximum 10 MB for mobile camera photos)
+    function isValidSize() {
+      return request.resource.size < 10 * 1024 * 1024;
+    }
+
+    // Leaf Images Storage Path: leaf-images/{uid}/{fileName}
+    match /leaf-images/{uid}/{fileName} {
+      // Allow read/delete if owner
+      allow read, delete: if isOwner(uid);
+      
+      // Allow write/create if owner and valid image type & size
+      allow create, update: if isOwner(uid) 
+        && isSupportedImageType() 
+        && isValidSize();
+    }
+
+    // Default deny all other storage paths
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

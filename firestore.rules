@@ -1,0 +1,51 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper function to verify if request is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Helper function to check if request is coming from the owner UID
+    function isOwner(uid) {
+      return isAuthenticated() && request.auth.uid == uid;
+    }
+
+    // User profile rule
+    match /users/{uid} {
+      allow read: if isOwner(uid);
+      allow create: if isOwner(uid);
+      // Prevent user from elevating their own role to 'admin' via client-side writes
+      allow update: if isOwner(uid) && 
+        (!request.resource.data.diff(resource.data).affectedKeys().hasAny(['role']) || 
+         request.resource.data.role == resource.data.role);
+      allow delete: if false; // Users cannot delete their profile document directly
+
+      // Subcollection: Leaf predictions
+      match /leafPredictions/{predictionId} {
+        allow read, create, update, delete: if isOwner(uid);
+      }
+
+      // Subcollection: Climate checks
+      match /climateChecks/{climateId} {
+        allow read, create, update, delete: if isOwner(uid);
+      }
+
+      // Subcollection: Silkworm diagnoses
+      match /silkwormDiagnoses/{diagnosisId} {
+        allow read, create, update, delete: if isOwner(uid);
+      }
+
+      // Subcollection: Notifications
+      match /notifications/{notificationId} {
+        allow read, create, update, delete: if isOwner(uid);
+      }
+    }
+
+    // Default deny all other collections
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
