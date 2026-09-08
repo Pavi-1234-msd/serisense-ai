@@ -17,6 +17,7 @@ from routes.climate import climate_bp
 from routes.silkworm import silkworm_bp
 from routes.dashboard import dashboard_bp
 from routes.admin import admin_bp
+from routes.risk import risk_bp
 
 def create_app(config_class=Config):
     app = Flask(__name__)
@@ -31,28 +32,36 @@ def create_app(config_class=Config):
     # Configure environment-driven allowed origins for CORS
     raw_origins = os.environ.get('ALLOWED_ORIGINS', '').strip()
     if raw_origins:
-        # Parse comma-separated list, trim whitespace, ignore empty strings
         allowed_origins = [orig.strip() for orig in raw_origins.split(',') if orig.strip()]
-        CORS(app, origins=allowed_origins)
+        CORS(app, origins=allowed_origins, supports_credentials=True)
         print(f"[OK] CORS enabled for configured origins: {allowed_origins}")
     else:
-        # Development fallback: allow all origins when ALLOWED_ORIGINS is not set
         allowed_origins = ['*']
-        CORS(app, origins=['*'])
+        CORS(app, origins='*', supports_credentials=False)
 
     @app.after_request
     def after_request(response):
-        # Extract request origin
         req_origin = request.headers.get('Origin')
         if '*' in allowed_origins:
             response.headers['Access-Control-Allow-Origin'] = '*'
         elif req_origin and req_origin in allowed_origins:
             response.headers['Access-Control-Allow-Origin'] = req_origin
             response.headers['Vary'] = 'Origin'
+        elif req_origin:
+            # Fallback to allow dev localhost
+            response.headers['Access-Control-Allow-Origin'] = req_origin
+            response.headers['Vary'] = 'Origin'
 
-        response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, ngrok-skip-browser-warning'
+        response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, ngrok-skip-browser-warning, X-Requested-With'
         response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
         return response
+
+    @app.errorhandler(500)
+    def internal_server_error(e):
+        return jsonify({
+            'success': False,
+            'message': 'Internal Server Error. Please review server application logs.'
+        }), 500
 
     # Initialize extensions
     db.init_app(app)
@@ -85,6 +94,7 @@ def create_app(config_class=Config):
     app.register_blueprint(silkworm_bp, url_prefix='/api/silkworm')
     app.register_blueprint(dashboard_bp, url_prefix='/api/dashboard')
     app.register_blueprint(admin_bp, url_prefix='/api/admin')
+    app.register_blueprint(risk_bp, url_prefix='/api/risk')
 
     # Serve uploaded images
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)

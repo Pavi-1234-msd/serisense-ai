@@ -88,32 +88,41 @@ def save_climate_check_firestore(uid, climate_result):
         print(f"[ERROR] Firestore save climate check failed: {e}")
         return None, None
 
-def save_silkworm_diagnosis_firestore(uid, diagnosis_result, selected_symptoms):
+def save_silkworm_diagnosis_firestore(uid, diagnosis_result=None, selected_symptoms=None, top_match=None, all_matches=None, diagnosis_id=None, context=None):
     """
     Saves silkworm disease diagnosis document to Firestore under: users/{uid}/silkwormDiagnoses/{diagnosis_id}
+    Accepts both combined result dict or granular keyword arguments for maximum compatibility.
     """
     try:
         db = get_firestore_db()
-        diagnosis_id = f"silkworm_{uuid.uuid4().hex[:12]}"
+        actual_id = diagnosis_id or f"silkworm_{uuid.uuid4().hex[:12]}"
 
-        top_match = diagnosis_result.get('top_match', {})
+        # Resolve top match and all matches
+        if diagnosis_result and isinstance(diagnosis_result, dict):
+            resolved_top = diagnosis_result.get('top_match', {})
+            resolved_all = diagnosis_result.get('all_matches', [])
+        else:
+            resolved_top = top_match or {}
+            resolved_all = all_matches or []
+
         diagnosis_doc = {
-            'diagnosisId': diagnosis_id,
+            'diagnosisId': actual_id,
             'uid': uid,
             'selectedSymptoms': selected_symptoms or [],
-            'predictedDisease': top_match.get('name', 'Unknown') if top_match else 'None',
-            'matchPercentage': top_match.get('match_percentage', 0.0) if top_match else 0.0,
-            'topMatch': top_match,
-            'allMatches': diagnosis_result.get('all_matches', []),
+            'predictedDisease': resolved_top.get('name', 'Unknown') if resolved_top else 'None',
+            'matchPercentage': resolved_top.get('match_percentage', 0.0) if resolved_top else 0.0,
+            'topMatch': resolved_top,
+            'allMatches': resolved_all,
+            'context': context or {},
             'assessmentType': 'Preliminary symptom-based assessment',
             'createdAt': firestore.SERVER_TIMESTAMP,
             'createdAtIso': datetime.utcnow().isoformat()
         }
 
-        doc_ref = db.collection('users').document(uid).collection('silkwormDiagnoses').document(diagnosis_id)
+        doc_ref = db.collection('users').document(uid).collection('silkwormDiagnoses').document(actual_id)
         doc_ref.set(diagnosis_doc)
-        print(f"[OK] Silkworm diagnosis saved to Firestore: users/{uid}/silkwormDiagnoses/{diagnosis_id}")
-        return diagnosis_id, diagnosis_doc
+        print(f"[OK] Silkworm diagnosis saved to Firestore: users/{uid}/silkwormDiagnoses/{actual_id}")
+        return actual_id, diagnosis_doc
     except Exception as e:
         print(f"[ERROR] Firestore save silkworm diagnosis failed: {e}")
         return None, None

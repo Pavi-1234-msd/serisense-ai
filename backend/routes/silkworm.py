@@ -43,13 +43,29 @@ def diagnose_silkworm():
         diagnosis_id = str(uuid.uuid4())
         top_match = result['top_match']
 
-        # 1. Firestore Save
-        fs_record = save_silkworm_diagnosis_firestore(
+        # Extract optional context metadata (rearing stage, bed, severity, feeding, env)
+        context = {
+            'stage': data.get('stage'),
+            'rearing_bed': data.get('rearing_bed'),
+            'observed_severity': data.get('observed_severity'),
+            'onset_timeline': data.get('onset_timeline'),
+            'affected_ratio': data.get('affected_ratio'),
+            'feeding_behavior': data.get('feeding_behavior'),
+            'larval_activity': data.get('larval_activity'),
+            'temperature': data.get('temperature'),
+            'humidity': data.get('humidity'),
+            'bed_condition': data.get('bed_condition'),
+            'ventilation': data.get('ventilation')
+        }
+
+        # 1. Firestore Save (safely captures diagnosis_id and returns id, doc)
+        fs_id, fs_doc = save_silkworm_diagnosis_firestore(
             uid=uid,
             diagnosis_id=diagnosis_id,
             selected_symptoms=selected_symptoms,
             top_match=top_match,
-            all_matches=result.get('all_matches', [])
+            all_matches=result.get('all_matches', []),
+            context=context
         )
 
         # 2. Legacy Dual-Write to SQLite (Fallback/Reference)
@@ -67,9 +83,10 @@ def diagnose_silkworm():
             current_app.logger.warning(f"SQLite dual-write failed (non-critical): {db_err}")
             db.session.rollback()
 
-        result['diagnosisId'] = diagnosis_id
-        result['id'] = diagnosis_id
-        result['createdAt'] = fs_record.get('createdAt')
+        result['diagnosisId'] = fs_id or diagnosis_id
+        result['id'] = fs_id or diagnosis_id
+        result['createdAt'] = fs_doc.get('createdAtIso') if fs_doc else None
+        result['context'] = context
 
         return jsonify({
             'success': True,
@@ -78,6 +95,7 @@ def diagnose_silkworm():
         }), 200
 
     except Exception as e:
+        current_app.logger.error(f"[ERROR] Silkworm diagnosis failed: {e}", exc_info=True)
         return jsonify({'success': False, 'message': f'Diagnosis failure: {str(e)}'}), 500
 
 

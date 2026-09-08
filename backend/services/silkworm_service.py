@@ -40,6 +40,7 @@ class SilkwormService:
             
             # Actual score from matched selected symptoms
             matched_symptoms = selected_set.intersection(disease_symptoms)
+            unmatched_symptoms = disease_symptoms.difference(selected_set)
             current_score = sum(weights.get(s, 1) for s in matched_symptoms)
 
             match_pct = (current_score / max_possible * 100.0) if max_possible > 0 else 0.0
@@ -51,6 +52,8 @@ class SilkwormService:
                 'match_percentage': round(match_pct, 1),
                 'matched_count': len(matched_symptoms),
                 'total_symptoms': len(disease_symptoms),
+                'matched_symptoms': list(matched_symptoms),
+                'unmatched_symptoms': list(unmatched_symptoms),
                 'cause': disease.get('cause', ''),
                 'treatment': disease.get('treatment', ''),
                 'prevention': disease.get('prevention', []),

@@ -127,13 +127,27 @@ export const getSilkwormSymptoms = async () => {
   return res.data;
 };
 
-export const diagnoseSilkwormDisease = async (symptomsArray) => {
-  const res = await api.post('/silkworm/diagnose', { symptoms: symptomsArray });
+export const diagnoseSilkwormDisease = async (symptomsOrPayload, contextData = {}) => {
+  let payload = {};
+  if (Array.isArray(symptomsOrPayload)) {
+    payload = { symptoms: symptomsOrPayload, ...contextData };
+  } else if (typeof symptomsOrPayload === 'object' && symptomsOrPayload !== null) {
+    payload = { ...symptomsOrPayload, ...contextData };
+  } else {
+    payload = { symptoms: [] };
+  }
+  const res = await api.post('/silkworm/diagnose', payload);
   return res.data;
 };
 
 export const getSilkwormHistory = async () => {
   const res = await api.get('/silkworm/history');
+  return res.data;
+};
+
+// --- Cross-Module Sericulture Risk API ---
+export const getCurrentRisk = async () => {
+  const res = await api.get('/risk/current');
   return res.data;
 };
 
