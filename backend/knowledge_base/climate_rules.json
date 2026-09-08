@@ -1,0 +1,80 @@
+{
+  "Egg": {
+    "name": "Egg / Incubation Stage",
+    "ideal_temp_min": 24.0,
+    "ideal_temp_max": 25.0,
+    "ideal_humidity_min": 80.0,
+    "ideal_humidity_max": 85.0,
+    "temp_unit": "°C",
+    "humidity_unit": "%",
+    "impact_high_temp": "Accelerates embryonic development unevenly, leading to irregular hatching and weak larvae.",
+    "impact_low_temp": "Delays hatching significantly and lowers hatching rate percentage.",
+    "impact_high_humidity": "Promotes mold and fungal growth on egg cards.",
+    "impact_low_humidity": "Causes egg desiccation, preventing larvae from emerging."
+  },
+  "Instar 1": {
+    "name": "Instar 1 (Chawki Rearing - 1st Stage)",
+    "ideal_temp_min": 26.0,
+    "ideal_temp_max": 28.0,
+    "ideal_humidity_min": 85.0,
+    "ideal_humidity_max": 90.0,
+    "temp_unit": "°C",
+    "humidity_unit": "%",
+    "impact_high_temp": "Young larvae dehydrate quickly, lose appetite, and become susceptible to viral flacherie.",
+    "impact_low_temp": "Sluggish feeding, extended instar duration, and uneven growth across the batch.",
+    "impact_high_humidity": "Excess moisture causes leaf decay on trays and invites fungal spores.",
+    "impact_low_humidity": "Chopped mulberry leaves dry out in under 30 minutes, starving young worms."
+  },
+  "Instar 2": {
+    "name": "Instar 2 (Chawki Rearing - 2nd Stage)",
+    "ideal_temp_min": 26.0,
+    "ideal_temp_max": 28.0,
+    "ideal_humidity_min": 85.0,
+    "ideal_humidity_max": 90.0,
+    "temp_unit": "°C",
+    "humidity_unit": "%",
+    "impact_high_temp": "Increased metabolic stress, high larval mortality during moulting.",
+    "impact_low_temp": "Prolonged moulting period, unequal development of larvae.",
+    "impact_high_humidity": "High humidity combined with heat causes rapid bacterial buildup in litter.",
+    "impact_low_humidity": "Leaves wither fast, larvae remain undersized."
+  },
+  "Instar 3": {
+    "name": "Instar 3 (Transition Stage)",
+    "ideal_temp_min": 25.0,
+    "ideal_temp_max": 27.0,
+    "ideal_humidity_min": 80.0,
+    "ideal_humidity_max": 85.0,
+    "temp_unit": "°C",
+    "humidity_unit": "%",
+    "impact_high_temp": "Higher body temperature in larvae, increased susceptibility to Grasserie (NPV).",
+    "impact_low_temp": "Slow leaf assimilation, poor weight gain prior to 4th instar.",
+    "impact_high_humidity": "Bed humidity builds up; risk of Flacherie increases.",
+    "impact_low_humidity": "Leaves dry out quickly, requiring extra feeds per day."
+  },
+  "Instar 4": {
+    "name": "Instar 4 (Late Stage - 4th Instar)",
+    "ideal_temp_min": 23.0,
+    "ideal_temp_max": 26.0,
+    "ideal_humidity_min": 70.0,
+    "ideal_humidity_max": 80.0,
+    "temp_unit": "°C",
+    "humidity_unit": "%",
+    "impact_high_temp": "Excess heat reduces feeding velocity, resulting in smaller silk glands.",
+    "impact_low_temp": "Worms take longer to complete instar, consuming more total foliage for lower yield.",
+    "impact_high_humidity": "High moisture leads to wet litter and severe bacterial Flacherie outbreak.",
+    "impact_low_humidity": "Foliage desiccates, worms spend extra energy eating dry leaves."
+  },
+  "Instar 5": {
+    "name": "Instar 5 (Final Rearing & Spinning Stage)",
+    "ideal_temp_min": 22.0,
+    "ideal_temp_max": 25.0,
+    "ideal_humidity_min": 65.0,
+    "ideal_humidity_max": 75.0,
+    "temp_unit": "°C",
+    "humidity_unit": "%",
+    "impact_high_temp": "Rapid spinning leads to thin, defective silk filaments and double cocoons.",
+    "impact_low_temp": "Spinning is delayed; worms may fail to mount properly.",
+    "impact_high_humidity": "Cocoons become soft, stained, and moldy; reellability drops drastically.",
+    "impact_low_humidity": "Silk thread breaks during spinning due to rapid moisture loss."
+  }
+}

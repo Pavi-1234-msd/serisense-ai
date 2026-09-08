@@ -1,0 +1,83 @@
+{
+  "Disease Free leaves": {
+    "severity": "None",
+    "status": "HEALTHY LEAF",
+    "cause": "No pathogen detected.",
+    "symptoms": [
+      "Uniform bright green colour across entire leaf",
+      "No spots, patches, rust marks or discolouration",
+      "Smooth leaf surface with no powdery coating",
+      "Strong leaf veins with no yellowing at margins"
+    ],
+    "silkworm_impact": "SAFE — Healthy leaves provide full nutritional value. Silkworms fed on healthy leaves show better growth, higher cocoon weight, and stronger silk thread quality.",
+    "chemical": "None required",
+    "dosage": "N/A",
+    "frequency": "N/A",
+    "immediate_actions": [
+      "Continue feeding these leaves to silkworms — fully safe",
+      "Harvest in early morning (6–8 AM) when leaf moisture is optimal",
+      "Store harvested leaves in cool damp cloth to retain freshness",
+      "Use within 4–6 hours of harvest for best results"
+    ],
+    "prevention": [
+      "Inspect leaves every 2–3 days to catch early disease signs",
+      "Maintain proper plant spacing (90cm × 90cm) for airflow",
+      "Apply balanced NPK fertiliser (100:50:50 kg/hectare/year)",
+      "Avoid overhead irrigation — water at base of plants only"
+    ]
+  },
+  "Leaf Rust": {
+    "severity": "Moderate",
+    "status": "LEAF RUST DETECTED",
+    "cause": "Fungal pathogen: Cerotelium fici. Spreads through wind-borne spores in warm, humid conditions.",
+    "symptoms": [
+      "Reddish-brown pinhead spots on underside of mature leaves",
+      "Yellow patches corresponding to spots on upper surface",
+      "Rusty powder rubs off onto fingers when touched",
+      "Premature leaf drying, curling, and early leaf drop"
+    ],
+    "silkworm_impact": "UNSAFE FOR FEEDING — Rust-infected leaves lose moisture rapidly, contain low protein content, and cause nutritional stress and flacherie disease in silkworms.",
+    "chemical": "Chlorothalonil 75% WP or Carbendazim 50% WP",
+    "dosage": "2g per litre of water",
+    "frequency": "Spray twice at 14-day intervals (Safety period: 10 days before feeding)",
+    "immediate_actions": [
+      "DO NOT feed rusted leaves to silkworms immediately",
+      "Pluck affected bottom leaves and burn or bury them outside the farm",
+      "Reduce shade around mulberry field to increase sunlight exposure",
+      "Improve drainage to prevent high atmospheric humidity around leaves"
+    ],
+    "prevention": [
+      "Prune mulberry bushes twice a year (after bottom pruning)",
+      "Maintain 90cm x 90cm spacing to prevent dense overlapping canopy",
+      "Avoid excess nitrogenous fertilisers which promote soft tender leaves",
+      "Spray 0.2% Carbendazim as a preventive spray before onset of winter/monsoon"
+    ]
+  },
+  "Leaf Spot": {
+    "severity": "High",
+    "status": "LEAF SPOT DETECTED",
+    "cause": "Fungal pathogen: Cercospora moricola. Thrives in high humidity (>80%) and high rainfall periods.",
+    "symptoms": [
+      "Dark brown circular or irregular spots with pale gray centers",
+      "Shot-hole appearance where dead center tissue drops out",
+      "Yellow halo surrounding brown spots on upper leaf surface",
+      "Leaves turn yellow and dry up prematurely"
+    ],
+    "silkworm_impact": "HIGHLY UNSAFE FOR FEEDING — Causes severe indigestibility, intestinal blockage, and stunted growth in silkworms due to toxins produced by Cercospora.",
+    "chemical": "Mancozeb 75% WP or Carbendazim 50% WP",
+    "dosage": "2g per litre of water (Mancozeb) or 1g per litre (Carbendazim)",
+    "frequency": "Spray immediately; repeat after 12–15 days if spots persist (Safety period: 10 days)",
+    "immediate_actions": [
+      "IMMEDIATELY isolate infected plot — do not harvest leaves from this area",
+      "Collect all fallen spotted leaves and destroy by burning",
+      "Ensure workers wash hands before touching healthy mulberry plants or rearing trays",
+      "Feed silkworms only from verified spot-free healthy sections"
+    ],
+    "prevention": [
+      "Collect and burn all crop residues after leaf harvest",
+      "Prune lower branches (up to 30cm from ground) to avoid soil splash",
+      "Apply recommended doses of potassium to enhance leaf resistance",
+      "Plant disease-resistant mulberry varieties (e.g., V1, G4, S36)"
+    ]
+  }
+}

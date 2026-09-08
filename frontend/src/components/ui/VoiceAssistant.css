@@ -1,0 +1,323 @@
+/* Voice Assistant Pure Vanilla CSS Styles */
+
+/* 1. Floating Bottom-Right Mic Button */
+.voice-mic-floating-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+  background: linear-gradient(135deg, #1b5e20, #2e7d32);
+  color: #ffffff;
+  border: 2px solid #ffffff;
+  border-radius: 50px;
+  padding: 12px 22px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(27, 94, 32, 0.35);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.25s ease;
+  user-select: none;
+}
+
+.voice-mic-floating-btn:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 12px 30px rgba(27, 94, 32, 0.45);
+  background: linear-gradient(135deg, #2e7d32, #43a047);
+}
+
+.voice-mic-icon {
+  font-size: 1.1rem;
+}
+
+/* 2. Modal Overlay Backdrop */
+.voice-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  padding: 16px;
+  animation: voiceFadeIn 0.2s ease-out;
+}
+
+@keyframes voiceFadeIn {
+  from { opacity: 0; transform: scale(0.98); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* 3. Modal Dialog Card */
+.voice-modal-card {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  background: #ffffff;
+  border: 1px solid #c8e6c9;
+  border-radius: 24px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+/* 4. Modal Header */
+.voice-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e8f5e9;
+}
+
+.voice-modal-title-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.voice-modal-avatar {
+  width: 44px;
+  height: 44px;
+  background: #2e7d32;
+  color: #ffffff;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  box-shadow: 0 4px 12px rgba(46, 125, 50, 0.25);
+}
+
+.voice-modal-titles {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.voice-modal-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.voice-modal-h3 {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #1b431b;
+  margin: 0;
+}
+
+.voice-lang-select {
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  background: #e8f5e9;
+  color: #1b5e20;
+  border: 1px solid #a5d6a7;
+  border-radius: 8px;
+  outline: none;
+  cursor: pointer;
+}
+
+.voice-lang-select:hover {
+  background: #c8e6c9;
+}
+
+.voice-modal-sub {
+  font-size: 0.8rem;
+  color: #558b2f;
+  margin: 0;
+}
+
+.voice-modal-close-btn {
+  background: #f4f8f4;
+  border: 1px solid #c8e6c9;
+  color: #555555;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.voice-modal-close-btn:hover {
+  background: #e8f5e9;
+  color: #1b5e20;
+}
+
+/* 5. Center Stage Mic Button */
+.voice-mic-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 0;
+  gap: 12px;
+}
+
+.voice-mic-pulse-btn {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.voice-mic-pulse-btn.idle {
+  background: linear-gradient(135deg, #2e7d32, #1b5e20);
+  color: #ffffff;
+}
+
+.voice-mic-pulse-btn.idle:hover {
+  transform: scale(1.06);
+  box-shadow: 0 10px 30px rgba(46, 125, 50, 0.35);
+}
+
+.voice-mic-pulse-btn.listening {
+  background: linear-gradient(135deg, #d32f2f, #c62828);
+  color: #ffffff;
+  transform: scale(1.1);
+  box-shadow: 0 0 0 12px rgba(211, 47, 47, 0.2);
+  animation: voicePulse 1.5s infinite;
+}
+
+@keyframes voicePulse {
+  0% { box-shadow: 0 0 0 0 rgba(211, 47, 47, 0.4); }
+  70% { box-shadow: 0 0 0 16px rgba(211, 47, 47, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(211, 47, 47, 0); }
+}
+
+.voice-mic-stage-label {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #1b5e20;
+}
+
+/* 6. Spoken Transcript Box */
+.voice-transcript-box {
+  background: #f4f8f4;
+  border: 1px solid #c8e6c9;
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-size: 0.88rem;
+  color: #1b431b;
+}
+
+.voice-transcript-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #2e7d32;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+
+/* 7. Error Alert */
+.voice-error-box {
+  background: #ffebee;
+  border: 1px solid #ffcdd2;
+  color: #c62828;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+/* 8. Advisory Result Card */
+.voice-advisory-card {
+  background: #e8f5e9;
+  border: 1px solid #a5d6a7;
+  border-radius: 16px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.voice-advisory-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.voice-advisory-topic {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #1b5e20;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.voice-audio-btn {
+  background: #2e7d32;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: background 0.2s ease;
+}
+
+.voice-audio-btn:hover {
+  background: #1b5e20;
+}
+
+.voice-audio-btn.stop {
+  background: #ffebee;
+  color: #c62828;
+  border: 1px solid #ffcdd2;
+}
+
+.voice-audio-btn.stop:hover {
+  background: #ffcdd2;
+}
+
+.voice-advisory-title {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #1b431b;
+  margin: 0;
+}
+
+.voice-advisory-desc {
+  font-size: 0.88rem;
+  color: #2e7d32;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.voice-advisory-action {
+  padding-top: 8px;
+  border-top: 1px solid #c8e6c9;
+  font-size: 0.8rem;
+  color: #1b5e20;
+  font-weight: 600;
+}

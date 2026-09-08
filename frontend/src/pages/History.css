@@ -1,0 +1,149 @@
+.history-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.history-header h1 {
+  color: #1b4332;
+  font-size: 1.8rem;
+}
+
+.history-header p {
+  color: #6c757d;
+  margin-bottom: 1.5rem;
+}
+
+.history-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.tab-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.tab-btn {
+  background: #e9ecef;
+  border: none;
+  padding: 0.75rem 1.2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  color: #495057;
+  transition: all 0.2s ease;
+}
+
+.tab-btn.active {
+  background: #2d6a4f;
+  color: white;
+}
+
+.search-box input {
+  padding: 0.7rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #ced4da;
+  width: 250px;
+}
+
+.records-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.history-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  border: 1px solid #e9ecef;
+}
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.8rem;
+}
+
+.disease-badge, .stage-badge {
+  font-weight: bold;
+  color: #1b4332;
+  font-size: 1.1rem;
+}
+
+.confidence-badge {
+  background: #d8f3dc;
+  color: #1b4332;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.status-badge.safe { background: #d8f3dc; color: #2b9348; padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.8rem; font-weight: bold; }
+.status-badge.warning { background: #fff3bf; color: #f59f00; padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.8rem; font-weight: bold; }
+.status-badge.critical { background: #ffe3e3; color: #e63946; padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.8rem; font-weight: bold; }
+
+.record-date {
+  font-size: 0.85rem;
+  color: #868e96;
+  margin-bottom: 1rem;
+}
+
+.climate-metrics {
+  display: flex;
+  gap: 1.5rem;
+  margin: 0.8rem 0;
+  font-size: 0.95rem;
+}
+
+.action-step {
+  font-size: 0.85rem;
+  color: #2b9348;
+  background: #f8f9fa;
+  padding: 0.5rem;
+  border-radius: 6px;
+}
+
+.empty-history {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 3rem;
+  color: #adb5bd;
+  font-size: 1.1rem;
+}
+
+@media (max-width: 768px) {
+  .history-container {
+    padding: 0 0.8rem;
+    margin: 1.2rem auto;
+  }
+  .history-controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.8rem;
+  }
+  .tab-buttons {
+    flex-wrap: wrap;
+    width: 100%;
+  }
+  .tab-btn {
+    flex: 1;
+    min-width: 100px;
+    padding: 0.6rem 0.8rem;
+    font-size: 0.85rem;
+  }
+  .search-box {
+    width: 100%;
+  }
+  .search-box input {
+    width: 100%;
+  }
+}

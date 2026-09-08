@@ -1,0 +1,243 @@
+.navbar {
+  background: linear-gradient(135deg, #1b5e20, #2e7d32);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 66px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.18);
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  width: 100%;
+}
+
+.navbar-container {
+  width: 100%;
+  max-width: 1440px;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+
+.navbar-brand {
+  color: white;
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.navbar-brand span {
+  color: #ffe082;
+}
+
+.navbar-links {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: nowrap;
+}
+
+.nav-link {
+  color: rgba(255, 255, 255, 0.88);
+  text-decoration: none;
+  padding: 6px 9px;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.nav-link:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+}
+
+.nav-link.active {
+  background: rgba(255, 255, 255, 0.22);
+  color: white;
+  font-weight: 700;
+}
+
+.lang-selector-wrapper {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 8px;
+  padding: 2px 6px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.lang-icon {
+  font-size: 0.85rem;
+  margin-right: 2px;
+}
+
+.mobile-menu-toggle {
+  display: none;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 1.6rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.mobile-menu-toggle:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* User Profile Badge & Login Buttons */
+.user-profile-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 4px 8px;
+  border-radius: 20px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.farmer-badge-info {
+  color: #ffffff;
+  font-size: 0.8rem;
+  font-weight: 700;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.btn-logout-nav {
+  background: #e53935;
+  color: white;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.btn-logout-nav:hover {
+  background: #c62828;
+}
+
+.btn-farmer-login {
+  background: linear-gradient(135deg, #ffe082 0%, #ffb300 100%);
+  color: #1b5e20;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.84rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.btn-farmer-login:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255, 179, 0, 0.4);
+}
+
+.lang-select {
+  background: transparent;
+  border: none;
+  color: white;
+  padding: 4px 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  outline: none;
+}
+
+.lang-select option {
+  background: #1b5e20;
+  color: white;
+}
+
+/* Offline / Demo Mode Pill */
+.demo-mode-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #fff8e1;
+  color: #d7ccc8;
+  color: #bf360c;
+  border: 1px solid #ffe082;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  white-space: nowrap;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.demo-dot {
+  font-size: 0.7rem;
+}
+
+/* Responsive Media Queries */
+@media (max-width: 1400px) {
+  .mobile-menu-toggle {
+    display: block;
+  }
+
+  .navbar-links {
+    display: none;
+    position: absolute;
+    top: 66px;
+    left: 0;
+    right: 0;
+    background: #164a19;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 16px 20px;
+    gap: 10px;
+    box-shadow: 0 12px 24px rgba(0,0,0,0.35);
+    border-top: 1px solid rgba(255,255,255,0.1);
+    z-index: 300;
+  }
+
+  .navbar-links.active {
+    display: flex;
+  }
+
+  .nav-link {
+    padding: 10px 14px;
+    font-size: 0.95rem;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.05);
+  }
+
+  .user-profile-badge, .lang-selector-wrapper, .btn-farmer-login, .demo-mode-pill {
+    width: 100%;
+    justify-content: space-between;
+    padding: 10px 14px;
+    border-radius: 10px;
+  }
+
+  .farmer-badge-info {
+    max-width: none;
+    font-size: 0.9rem;
+  }
+}

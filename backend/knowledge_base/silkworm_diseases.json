@@ -1,0 +1,156 @@
+{
+  "diseases": [
+    {
+      "id": "grasserie",
+      "name": "Grasserie (Nuclear Polyhedrosis Virus - BmNPV)",
+      "type": "Viral Disease",
+      "symptoms": [
+        "larvae_sluggish",
+        "body_swollen",
+        "skin_fragile",
+        "milky_white_fluid",
+        "worms_climb_walls",
+        "restlessness",
+        "intersegmental_swelling",
+        "head_tilted"
+      ],
+      "weights": {
+        "larvae_sluggish": 1,
+        "body_swollen": 2,
+        "skin_fragile": 3,
+        "milky_white_fluid": 3,
+        "worms_climb_walls": 3,
+        "restlessness": 2,
+        "intersegmental_swelling": 3,
+        "head_tilted": 1
+      },
+      "cause": "BmNPV (Bombyx mori Nuclear Polyhedrosis Virus). Spreads rapidly during high temperature and high humidity periods.",
+      "treatment": "No cure for infected worms. Immediately isolate and destroy affected larvae.",
+      "prevention": [
+        "Dust mandatory bed disinfectant (e.g., Vijetha, Ankush, or Sanjeevini) at 3g/sq.ft after each moult",
+        "Maintain ideal rearing house temperature (24-26°C) and humidity (70-75%)",
+        "Provide maximum ventilation to reduce accumulation of viral particles",
+        "Disinfect rearing equipment with 2% formalin solution before starting batch"
+      ],
+      "silkworm_impact": "100% fatal for infected worms. Uncontrolled outbreaks can wipe out 80-90% of total cocoon crop."
+    },
+    {
+      "id": "flacherie",
+      "name": "Flacherie (Bacterial / Infectious Flacherie)",
+      "type": "Bacterial & Viral Complex",
+      "symptoms": [
+        "larvae_sluggish",
+        "stop_feeding",
+        "body_soft",
+        "vomiting_fluid",
+        "bad_smell",
+        "blackening_body",
+        "uneven_growth",
+        "diarrhea"
+      ],
+      "weights": {
+        "larvae_sluggish": 1,
+        "stop_feeding": 2,
+        "body_soft": 3,
+        "vomiting_fluid": 3,
+        "bad_smell": 3,
+        "blackening_body": 2,
+        "uneven_growth": 1,
+        "diarrhea": 2
+      },
+      "cause": "Bacterial infection (Streptococcus, Bacillus) or Iflavirus triggered by feeding poor quality, fermented, or wet leaves.",
+      "treatment": "Remove infected larvae using chopsticks. Disinfect bed with lime powder + bed disinfectant.",
+      "prevention": [
+        "Never feed wet, dusty, overgrown, or leaf-spot infected mulberry leaves",
+        "Avoid overcrowded rearing trays; maintain proper larval density per bed area",
+        "Dust lime powder (100g/sq.m) to keep bed dry during high humidity days",
+        "Maintain strict hygienic hand washing before handling feed or larvae"
+      ],
+      "silkworm_impact": "Severe reduction in cocoon quality; affected larvae die prior to spinning or spin thin melt cocoons."
+    },
+    {
+      "id": "muscardine",
+      "name": "Muscardine (White / Green Fungal Muscardine)",
+      "type": "Fungal Disease",
+      "symptoms": [
+        "larvae_sluggish",
+        "stop_feeding",
+        "white_fungal_growth",
+        "body_hard_chalky",
+        "stiff_corpse",
+        "reddish_pink_spots",
+        "oil_specks_skin"
+      ],
+      "weights": {
+        "larvae_sluggish": 1,
+        "stop_feeding": 1,
+        "white_fungal_growth": 3,
+        "body_hard_chalky": 3,
+        "stiff_corpse": 3,
+        "reddish_pink_spots": 2,
+        "oil_specks_skin": 2
+      },
+      "cause": "Fungal pathogen Beauveria bassiana. Fungal spores germinate on larval skin during cold, humid weather.",
+      "treatment": "Dust Dithane M-45 (1%) mixed with slaked lime powder immediately across all trays.",
+      "prevention": [
+        "Dust Captan / Dithane M-45 + Lime mixture (1:99 ratio) on larvae after every moult",
+        "Keep rearing room temperature above 25°C and reduce humidity below 70%",
+        "Burn all mummified chalky white larval corpses immediately — do not leave in room",
+        "Ensure air circulation using exhaust fans to prevent spore accumulation"
+      ],
+      "silkworm_impact": "Larvae die rapidly and become hard chalky mummies, releasing millions of infectious spores into rearing hall."
+    },
+    {
+      "id": "pebrine",
+      "name": "Pebrine (Microsporidian Disease - Nosema bombycis)",
+      "type": "Protozoan Disease",
+      "symptoms": [
+        "uneven_growth",
+        "dark_pepper_spots",
+        "sluggish_moulting",
+        "undersized_worms",
+        "wrinkled_skin",
+        "high_moult_failure"
+      ],
+      "weights": {
+        "uneven_growth": 2,
+        "dark_pepper_spots": 3,
+        "sluggish_moulting": 2,
+        "undersized_worms": 2,
+        "wrinkled_skin": 2,
+        "high_moult_failure": 3
+      },
+      "cause": "Microsporidian parasite Nosema bombycis transmitted vertically from moth to egg or horizontally via contaminated food.",
+      "treatment": "No cure. Transmitted via mother moth. Whole batch must be safely destroyed under guidance.",
+      "prevention": [
+        "Procure certified disease-free layings (DFLs) only from recognized grainages",
+        "Conduct mother moth microscopic examination before egg incubation",
+        "Disinfect grainages and rearing houses with 2% formalin + 0.5% bleaching powder",
+        "Destroy any batch displaying pepper-like dark spots on integument"
+      ],
+      "silkworm_impact": "Total crop loss across successive generations if transovarial transmission occurs."
+    }
+  ],
+  "symptoms": [
+    { "id": "larvae_sluggish", "label": "Larvae become sluggish and slow-moving" },
+    { "id": "stop_feeding", "label": "Larvae stop feeding completely" },
+    { "id": "body_swollen", "label": "Body becomes swollen and shiny" },
+    { "id": "skin_fragile", "label": "Skin breaks easily with slight pressure" },
+    { "id": "milky_white_fluid", "label": "Milky white hemolymph / fluid leaks from body" },
+    { "id": "worms_climb_walls", "label": "Worms crawl restlessly toward tray rims / walls" },
+    { "id": "intersegmental_swelling", "label": "Swelling between body segments" },
+    { "id": "head_tilted", "label": "Head tilted upward or held unnaturally" },
+    { "id": "body_soft", "label": "Body becomes soft, limp, and flaccid" },
+    { "id": "vomiting_fluid", "label": "Vomiting brown or clear digestive fluid" },
+    { "id": "bad_smell", "label": "Foul or decaying smell from rearing bed" },
+    { "id": "blackening_body", "label": "Body turns dark brown or black after death" },
+    { "id": "diarrhea", "label": "Soft, wet feces or sticky diarrhea" },
+    { "id": "white_fungal_growth", "label": "White powdery fungal growth covers dead worm" },
+    { "id": "body_hard_chalky", "label": "Dead corpse becomes hard and chalky white" },
+    { "id": "stiff_corpse", "label": "Corpse is stiff like a piece of wood/chalk" },
+    { "id": "reddish_pink_spots", "label": "Irregular reddish or pinkish specks on skin" },
+    { "id": "dark_pepper_spots", "label": "Black or dark pepper-like tiny spots on skin" },
+    { "id": "uneven_growth", "label": "Uneven growth rates (some worms tiny, some big)" },
+    { "id": "sluggish_moulting", "label": "Worms fail to enter or settle for moult properly" }
+  ]
+}

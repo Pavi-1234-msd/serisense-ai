@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+*.pyo
+venv/
+.venv/
+.env
+*.egg-info/
+dist/
+build/
+*.db
+*.sqlite3
+
+# Keep model files tracked
+!model/*.keras
+!model/*.h5

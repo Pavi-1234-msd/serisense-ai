@@ -1,0 +1,253 @@
+.silkworm-disease-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px 20px;
+}
+.badge-chip.purple {
+  background: #f3e5f5;
+  color: #6a1b9a;
+  border-color: #e1bee7;
+}
+
+.disease-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+@media (max-width: 900px) {
+  .disease-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .page-header {
+    flex-wrap: wrap;
+    padding: 18px 16px;
+    gap: 14px;
+  }
+  .header-icon {
+    font-size: 2.2rem;
+    padding: 8px 12px;
+  }
+  .header-title {
+    font-size: 1.4rem;
+  }
+  .header-subtitle {
+    font-size: 0.85rem;
+  }
+  .header-badge {
+    margin-left: 0;
+    width: 100%;
+  }
+}
+
+.symptoms-card, .diagnosis-card {
+  background: white;
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--shadow);
+}
+
+.symptoms-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.btn-clear {
+  background: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-clear:hover {
+  background: #e0e0e0;
+  color: #333;
+}
+
+.presets-wrapper {
+  margin-bottom: 18px;
+}
+
+.btn-preset.purple:hover {
+  border-color: #6a1b9a;
+  color: #6a1b9a;
+  background: #f3e5f5;
+}
+
+/* Symptom Checkboxes */
+.symptoms-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 380px;
+  overflow-y: auto;
+  padding-right: 6px;
+  margin-bottom: 20px;
+}
+
+.symptom-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  background: #fdfdfd;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.symptom-item:hover {
+  background: #f3e5f5;
+  border-color: #ba68c8;
+}
+
+.symptom-item.selected {
+  background: #f3e5f5;
+  border-color: #6a1b9a;
+  box-shadow: 0 2px 6px rgba(106,27,154,0.12);
+}
+
+.symptom-checkbox {
+  width: 18px;
+  height: 18px;
+  accent-color: #6a1b9a;
+  cursor: pointer;
+}
+
+.symptom-label {
+  font-size: 0.88rem;
+  color: #333;
+  cursor: pointer;
+  line-height: 1.35;
+  flex: 1;
+}
+
+.purple-btn {
+  background: linear-gradient(135deg, #6a1b9a, #4a148c);
+  box-shadow: 0 4px 12px rgba(106,27,154,0.3);
+}
+
+.purple-btn:hover:not(:disabled) {
+  box-shadow: 0 6px 16px rgba(106,27,154,0.4);
+}
+
+.purple-spin {
+  border-top-color: #6a1b9a;
+}
+
+/* Diagnosis Banner */
+.disease-banner {
+  background: linear-gradient(135deg, #4a148c, #311b92);
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.banner-category {
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  opacity: 0.85;
+}
+
+.banner-name {
+  font-size: 1.35rem;
+  margin-top: 2px;
+}
+
+.match-pill {
+  background: rgba(255,255,255,0.2);
+  padding: 8px 14px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.match-num {
+  font-size: 1.3rem;
+  font-weight: bold;
+  display: block;
+}
+
+.match-lbl {
+  font-size: 0.7rem;
+  opacity: 0.9;
+}
+
+.risk-bar {
+  background: #f9f9f9;
+  border: 1px solid #eee;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.risk-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.risk-lbl {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.risk-val {
+  font-weight: bold;
+  color: #c62828;
+  font-size: 0.92rem;
+}
+
+/* Diagnosis blocks */
+.diag-block {
+  background: #fafafa;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+}
+
+.diag-title {
+  font-size: 0.95rem;
+  color: #4a148c;
+  margin-bottom: 8px;
+}
+
+.diag-text {
+  font-size: 0.88rem;
+  color: #444;
+  line-height: 1.45;
+}
+
+.diag-block.treatment {
+  background: #f3e5f5;
+  border-color: #e1bee7;
+}
+
+.diag-list {
+  list-style: none;
+  padding: 0;
+  font-size: 0.88rem;
+}
+
+.diag-list li {
+  margin-bottom: 6px;
+  color: #333;
+  line-height: 1.4;
+}
+
+
