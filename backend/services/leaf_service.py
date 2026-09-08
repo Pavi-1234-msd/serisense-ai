@@ -85,6 +85,31 @@ class LeafClassifierService:
         img_array = np.array(image, dtype=np.float32) / 255.0
         img_array = np.expand_dims(img_array, axis=0)
 
+        # Basic foliar validity check (reject non-agricultural objects, portraits, skin tones, blank docs)
+        img_np = np.array(image)
+        r_chan = img_np[:, :, 0].astype(np.float32)
+        g_chan = img_np[:, :, 1].astype(np.float32)
+        b_chan = img_np[:, :, 2].astype(np.float32)
+
+        # Human skin tone mask: R > 80, G > 40, B > 20, R > G, G > B, |R-G| > 12
+        skin_mask = (r_chan > 80) & (g_chan > 40) & (b_chan > 20) & (r_chan > g_chan) & (g_chan > b_chan) & (np.abs(r_chan - g_chan) > 12)
+        skin_ratio = np.mean(skin_mask)
+
+        # Plant leaf green or foliar rust mask
+        green_mask = (g_chan > r_chan * 1.02) & (g_chan > b_chan * 1.15) & (g_chan > 35)
+        rust_mask = (r_chan > 90) & (g_chan > 75) & (b_chan < 70) & (np.abs(r_chan - g_chan) < 45) & (g_chan > b_chan * 1.3)
+        foliar_ratio = np.mean(green_mask | rust_mask)
+
+        if skin_ratio > 0.18 and foliar_ratio < 0.22:
+            return {
+                'disease': 'Invalid Image',
+                'confidence': 0.0,
+                'is_invalid': True,
+                'message': 'Human portrait or non-plant image detected. Please upload a clear photo of a mulberry leaf.',
+                'predictions': {},
+                'report': {}
+            }
+
         probs = None
         if self.interpreter is not None:
             self.interpreter.set_tensor(self.input_index, img_array)

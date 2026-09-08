@@ -51,6 +51,13 @@ def predict_leaf():
             classifier_service = current_app.config['LEAF_SERVICE']
             result = classifier_service.predict(image_bytes)
 
+            if result.get('is_invalid'):
+                return jsonify({
+                    'success': False,
+                    'is_invalid': True,
+                    'message': result.get('message', 'Non-mulberry leaf image detected. Please upload a clear photo of a mulberry leaf.')
+                }), 400
+
             # 1. Save to Cloud Firestore users/{uid}/leafPredictions/{predictionId}
             storage_path = upload_leaf_image_to_storage(uid, saved_filename, image_bytes, content_type=f"image/{ext}")
             prediction_id, firestore_doc = save_leaf_prediction_firestore(uid, result, saved_filename, storage_path)
