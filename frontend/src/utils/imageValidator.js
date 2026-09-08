@@ -97,54 +97,46 @@ export const validateIsLeafImage = (imageFile) => {
           const skinRatio = humanSkinPixels / totalPixels;
           const blueRatio = blueSkyOrShirtPixels / totalPixels;
           const vegetationRatio = leafVegetationPixels / totalPixels;
-          const avgSaturation = totalSaturation / totalPixels;
 
-          // RULE A: Human Face / Portrait / Skin Detection
-          // If > 18% of image matches skin tones and vegetation is low
-          if (skinRatio > 0.18 && vegetationRatio < 0.22) {
+          // STRICT LEAF VALIDATION RULES
+          // 1. Check if the image contains dominant plant foliar colors
+          // A genuine mulberry leaf (healthy or diseased) is dominated by plant pigments (chlorophyll green, foliar rust brown, or diseased necrotic halos)
+          
+          // ID Card / White Document / Grey Wall background
+          if (whiteGrayRatio > 0.40) {
             resolve({
               isLeaf: false,
-              reason: 'Human subject or portrait detected. Please upload a clear photo of a mulberry leaf.',
-              confidenceScore: Math.round(skinRatio * 100)
-            });
-            return;
-          }
-
-          // RULE B: Document / Chart / Paper Screenshot
-          if (whiteGrayRatio > 0.55 && vegetationRatio < 0.20) {
-            resolve({
-              isLeaf: false,
-              reason: 'Image appears to be a chart, graph, or document screenshot. Please upload a mulberry leaf photo.',
+              reason: 'Background contains paper, card, text, or wall surface. Please upload a close-up photo of a mulberry leaf.',
               confidenceScore: Math.round((1 - whiteGrayRatio) * 100)
             });
             return;
           }
 
-          // RULE C: Blue background / clothing with no plant matter
-          if (blueRatio > 0.35 && vegetationRatio < 0.15) {
+          // Human face / skin tone check (even small faces or ID cards have skin pixels > 5%)
+          if (skinRatio > 0.06) {
             resolve({
               isLeaf: false,
-              reason: 'Image shows non-agricultural subject (clothing/background). Please upload a mulberry leaf photo.',
+              reason: 'Human subject or portrait detected. Please upload a photo of a mulberry leaf only.',
+              confidenceScore: Math.round(skinRatio * 100)
+            });
+            return;
+          }
+
+          // Non-agricultural blue / dark clothing check
+          if (blueRatio > 0.15) {
+            resolve({
+              isLeaf: false,
+              reason: 'Non-agricultural clothing or artificial background detected. Please upload a mulberry leaf photo.',
               confidenceScore: Math.round(blueRatio * 100)
             });
             return;
           }
 
-          // RULE D: Minimum Leaf Vegetation Threshold
-          // A real mulberry leaf filling the frame should have at least 15% plant foliar colors
-          if (vegetationRatio < 0.15 && skinRatio > 0.10) {
+          // Strict foliar threshold: Genuine mulberry leaf photo must have at least 25% plant foliage pixels
+          if (vegetationRatio < 0.25) {
             resolve({
               isLeaf: false,
-              reason: 'No clear mulberry leaf foliage found in this image. Please upload a clear leaf photo.',
-              confidenceScore: Math.round(vegetationRatio * 100)
-            });
-            return;
-          }
-
-          if (vegetationRatio < 0.12 && avgSaturation < 0.22) {
-            resolve({
-              isLeaf: false,
-              reason: 'No leaf features or plant vegetation colors detected. Please upload a mulberry leaf.',
+              reason: 'No clear mulberry leaf foliage detected in this photo. Please ensure the leaf fills the camera frame.',
               confidenceScore: Math.round(vegetationRatio * 100)
             });
             return;
@@ -153,7 +145,7 @@ export const validateIsLeafImage = (imageFile) => {
           // Passed all checks - valid leaf photo
           resolve({
             isLeaf: true,
-            reason: 'Leaf features detected',
+            reason: 'Leaf features verified successfully',
             confidenceScore: Math.round(vegetationRatio * 100)
           });
         } catch (err) {

@@ -17,18 +17,25 @@ function LeafDisease() {
   const [dragActive, setDragActive] = useState(false);
   const [invalidImageInfo, setInvalidImageInfo] = useState(null);
 
-  // Handle File Selection
-  const handleFileChange = (file) => {
+  // Handle File Selection with Immediate Foliar Validation
+  const handleFileChange = async (file) => {
     if (!file) return;
     if (!file.type.startsWith('image/')) {
       setError('Please select a valid image file (JPG, PNG, JPEG).');
       return;
     }
     setError(null);
-    setInvalidImageInfo(null);
+    setResult(null);
     setSelectedFile(file);
     setPreviewUrl(URL.createObjectURL(file));
-    setResult(null);
+
+    // Immediate validation check
+    const valCheck = await validateIsLeafImage(file);
+    if (!valCheck.isLeaf) {
+      setInvalidImageInfo(valCheck);
+    } else {
+      setInvalidImageInfo(null);
+    }
   };
 
   // Drag & Drop handlers
@@ -294,15 +301,24 @@ _Sri Krishna College of Technology_`;
 
             {error && <div className="error-alert">⚠️ {error}</div>}
 
+            {invalidImageInfo && (
+              <div className="error-alert" style={{ background: '#fff3cd', color: '#856404', borderColor: '#ffeeba' }}>
+                ⚠️ <strong>Non-Leaf Image:</strong> {invalidImageInfo.reason}
+              </div>
+            )}
+
             <button
               type="submit"
               className="btn-submit"
-              disabled={loading || (!selectedFile && !previewUrl)}
+              disabled={loading || (!selectedFile && !previewUrl) || Boolean(invalidImageInfo)}
+              style={invalidImageInfo ? { opacity: 0.6, cursor: 'not-allowed' } : {}}
             >
               {loading ? (
                 <>
                   <span className="spinner"></span> {t('analyzing_leaf') || 'Analyzing Leaf with AI...'}
                 </>
+              ) : invalidImageInfo ? (
+                '🚫 Please Upload a Valid Mulberry Leaf'
               ) : (
                 t('btn_run_ai') || '🔬 Analyze Leaf with AI'
               )}
