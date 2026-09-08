@@ -3,111 +3,112 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 66px;
-  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.18);
+  min-height: 64px;
+  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.18);
   position: sticky;
   top: 0;
-  z-index: 200;
+  z-index: 500;
   width: 100%;
 }
 
 .navbar-container {
   width: 100%;
-  max-width: 1440px;
-  padding: 0 24px;
+  max-width: 1560px;
+  padding: 0 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  position: relative;
+  gap: 12px;
+}
+
+/* Brand Section */
+.navbar-left {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
 }
 
 .navbar-brand {
-  color: white;
-  font-size: 1.35rem;
+  color: #ffffff;
+  font-size: 1.3rem;
   font-weight: 800;
   letter-spacing: 0.3px;
   display: flex;
   align-items: center;
   gap: 8px;
   text-decoration: none;
-  flex-shrink: 0;
+  white-space: nowrap;
 }
 
-.navbar-brand span {
-  color: #ffe082;
+.brand-logo {
+  font-size: 1.4rem;
 }
 
-.navbar-links {
+.brand-name {
+  color: #ffffff;
+}
+
+/* Main Collapsible Area */
+.navbar-collapse {
   display: flex;
   align-items: center;
-  gap: 6px;
+  justify-content: space-between;
+  flex: 1;
+  gap: 12px;
+  margin-left: 12px;
+}
+
+/* Center Nav Links */
+.navbar-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
   flex-wrap: nowrap;
 }
 
 .nav-link {
-  color: rgba(255, 255, 255, 0.88);
+  color: rgba(255, 255, 255, 0.9);
   text-decoration: none;
-  padding: 6px 9px;
+  padding: 6px 10px;
   border-radius: 8px;
   font-size: 0.82rem;
   font-weight: 600;
   white-space: nowrap;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
   display: flex;
   align-items: center;
   gap: 4px;
 }
 
 .nav-link:hover {
-  background: rgba(255, 255, 255, 0.15);
-  color: white;
+  background: rgba(255, 255, 255, 0.16);
+  color: #ffffff;
 }
 
 .nav-link.active {
   background: rgba(255, 255, 255, 0.22);
-  color: white;
+  color: #ffffff;
   font-weight: 700;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25);
 }
 
-.lang-selector-wrapper {
+/* Right Actions Area (Profile, Language, Live Badge) */
+.navbar-actions {
   display: flex;
   align-items: center;
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  border-radius: 8px;
-  padding: 2px 6px;
-  white-space: nowrap;
+  gap: 10px;
   flex-shrink: 0;
+  margin-left: auto;
 }
 
-.lang-icon {
-  font-size: 0.85rem;
-  margin-right: 2px;
-}
-
-.mobile-menu-toggle {
-  display: none;
-  background: transparent;
-  border: none;
-  color: white;
-  font-size: 1.6rem;
-  cursor: pointer;
-  padding: 4px 8px;
-  border-radius: 6px;
-}
-
-.mobile-menu-toggle:hover {
-  background: rgba(255, 255, 255, 0.15);
-}
-
-/* User Profile Badge & Login Buttons */
+/* User Badge */
 .user-profile-badge {
   display: flex;
   align-items: center;
-  gap: 6px;
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  padding: 4px 8px;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 4px 10px;
   border-radius: 20px;
   white-space: nowrap;
   flex-shrink: 0;
@@ -117,18 +118,19 @@
   color: #ffffff;
   font-size: 0.8rem;
   font-weight: 700;
-  max-width: 120px;
+  max-width: 110px;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .btn-logout-nav {
   background: #e53935;
   color: white;
   border: none;
-  padding: 4px 8px;
-  border-radius: 12px;
-  font-size: 0.74rem;
+  padding: 3px 8px;
+  border-radius: 10px;
+  font-size: 0.72rem;
   font-weight: 700;
   cursor: pointer;
   transition: background 0.2s ease;
@@ -138,13 +140,14 @@
   background: #c62828;
 }
 
+/* Login Button */
 .btn-farmer-login {
   background: linear-gradient(135deg, #ffe082 0%, #ffb300 100%);
   color: #1b5e20;
   border: none;
   padding: 6px 14px;
   border-radius: 20px;
-  font-size: 0.84rem;
+  font-size: 0.82rem;
   font-weight: 800;
   cursor: pointer;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
@@ -158,11 +161,28 @@
   box-shadow: 0 4px 12px rgba(255, 179, 0, 0.4);
 }
 
+/* Language Dropdown Selector */
+.lang-selector-wrapper {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 8px;
+  padding: 3px 6px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.lang-icon {
+  font-size: 0.85rem;
+  margin-right: 2px;
+}
+
 .lang-select {
   background: transparent;
   border: none;
   color: white;
-  padding: 4px 6px;
+  padding: 2px 4px;
   font-size: 0.8rem;
   font-weight: 600;
   cursor: pointer;
@@ -174,62 +194,136 @@
   color: white;
 }
 
-/* Offline / Demo Mode Pill */
+/* Status Pill (Live API vs Offline Mode) */
 .demo-mode-pill {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   background: #fff8e1;
-  color: #d7ccc8;
   color: #bf360c;
   border: 1px solid #ffe082;
-  padding: 5px 12px;
-  border-radius: 20px;
-  font-size: 0.78rem;
+  padding: 4px 10px;
+  border-radius: 16px;
+  font-size: 0.76rem;
   font-weight: 800;
   white-space: nowrap;
   flex-shrink: 0;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.25s ease;
+}
+
+.demo-mode-pill.api-live {
+  background: #e8f5e9;
+  color: #1b5e20;
+  border-color: #a5d6a7;
+}
+
+.demo-mode-pill.api-offline {
+  background: #fff8e1;
+  color: #b78103;
+  border-color: #ffe082;
 }
 
 .demo-dot {
-  font-size: 0.7rem;
+  font-size: 0.68rem;
+  line-height: 1;
 }
 
-/* Responsive Media Queries */
-@media (max-width: 1400px) {
+.demo-text {
+  letter-spacing: 0.2px;
+}
+
+/* Mobile Hamburger Toggle */
+.mobile-menu-toggle {
+  display: none;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.mobile-menu-toggle:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Medium Desktop (Compact font / spacing before hamburger) */
+@media (max-width: 1280px) {
+  .navbar-container {
+    padding: 0 14px;
+    gap: 8px;
+  }
+  .navbar-brand {
+    font-size: 1.18rem;
+  }
+  .nav-link {
+    padding: 5px 7px;
+    font-size: 0.78rem;
+  }
+  .navbar-actions {
+    gap: 6px;
+  }
+  .farmer-badge-info {
+    max-width: 85px;
+  }
+}
+
+/* Mobile & Tablet Responsive Dropdown Menu */
+@media (max-width: 1060px) {
   .mobile-menu-toggle {
     display: block;
   }
 
-  .navbar-links {
+  .navbar-collapse {
     display: none;
     position: absolute;
-    top: 66px;
+    top: 64px;
     left: 0;
     right: 0;
     background: #164a19;
     flex-direction: column;
     align-items: stretch;
     padding: 16px 20px;
-    gap: 10px;
-    box-shadow: 0 12px 24px rgba(0,0,0,0.35);
-    border-top: 1px solid rgba(255,255,255,0.1);
-    z-index: 300;
+    gap: 14px;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    z-index: 600;
+    margin-left: 0;
   }
 
-  .navbar-links.active {
+  .navbar-collapse.active {
     display: flex;
+  }
+
+  .navbar-nav-links {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
   }
 
   .nav-link {
     padding: 10px 14px;
     font-size: 0.95rem;
     border-radius: 8px;
-    background: rgba(255,255,255,0.05);
+    background: rgba(255, 255, 255, 0.05);
   }
 
-  .user-profile-badge, .lang-selector-wrapper, .btn-farmer-login, .demo-mode-pill {
+  .navbar-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    margin-left: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 12px;
+  }
+
+  .user-profile-badge,
+  .lang-selector-wrapper,
+  .btn-farmer-login,
+  .demo-mode-pill {
     width: 100%;
     justify-content: space-between;
     padding: 10px 14px;

@@ -1,28 +1,21 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { checkClimateStatus } from '../services/api';
 import { useLanguage } from '../context/LanguageContext';
-import { getTranslatedClimateReport } from '../i18n/diseaseContent';
+import { analyzeClimateVariance, getInstarAdvisory, INSTAR_CLIMATE_KNOWLEDGE } from '../services/climateAdvisories';
 import './ClimateAdvisory.css';
-
-export const SILKWORM_CLIMATE_RULES = {
-  'Egg': { desc: 'Egg / Incubation Stage', min_temp: 24, max_temp: 25, min_hum: 80, max_hum: 85 },
-  'Instar 1': { desc: 'Chawki Rearing - 1st Stage', min_temp: 26, max_temp: 28, min_hum: 85, max_hum: 90 },
-  'Instar 2': { desc: 'Chawki Rearing - 2nd Stage', min_temp: 26, max_temp: 28, min_hum: 85, max_hum: 90 },
-  'Instar 3': { desc: 'Transition Stage', min_temp: 25, max_temp: 27, min_hum: 80, max_hum: 85 },
-  'Instar 4': { desc: 'Late Stage - 4th Instar', min_temp: 23, max_temp: 26, min_hum: 70, max_hum: 80 },
-  'Instar 5': { desc: 'Final Rearing & Spinning Stage', min_temp: 22, max_temp: 25, min_hum: 65, max_hum: 75 }
-};
 
 function ClimateAdvisory() {
   const { t, lang } = useLanguage();
-  const [stage, setStage] = useState('Instar 1');
-  const [temp, setTemp] = useState('27');
-  const [humidity, setHumidity] = useState('88');
+  const navigate = useNavigate();
+  const [stage, setStage] = useState('Instar 3');
+  const [temp, setTemp] = useState('27.0');
+  const [humidity, setHumidity] = useState('88.0');
   const [loading, setLoading] = useState(false);
   const [report, setReport] = useState(null);
   const [error, setError] = useState(null);
 
-  const stagesList = Object.keys(SILKWORM_CLIMATE_RULES);
+  const stagesList = Object.keys(INSTAR_CLIMATE_KNOWLEDGE);
 
   const handleCheck = async (e) => {
     if (e) e.preventDefault();
@@ -46,7 +39,7 @@ function ClimateAdvisory() {
         setError(res.message || 'Failed to calculate climate status.');
       }
     } catch (err) {
-      setError('Failed to compute climate advisory. Please check server connection.');
+      setError('Failed to compute climate advisory. Please verify server connectivity.');
     } finally {
       setLoading(false);
     }
@@ -55,7 +48,7 @@ function ClimateAdvisory() {
   useEffect(() => {
     handleCheck();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [stage]);
 
   const handlePreset = (presetStage, presetTemp, presetHum) => {
     setStage(presetStage);
@@ -64,12 +57,16 @@ function ClimateAdvisory() {
   };
 
   const getStatusBadge = (status) => {
-    if (status === 'SAFE') return { label: t('status_safe') || 'SAFE', class: 'status-safe', icon: '✅' };
-    if (status === 'WARNING') return { label: t('status_warning') || 'WARNING', class: 'status-warning', icon: '⚠️' };
-    return { label: t('status_critical') || 'CRITICAL', class: 'status-critical', icon: '🚨' };
+    if (status === 'SAFE') return { label: t('status_safe') || 'SAFE CONDITIONS', class: 'status-safe', icon: '✅' };
+    if (status === 'WARNING') return { label: t('status_warning') || 'WARNING — ADJUSTMENT NEEDED', class: 'status-warning', icon: '⚠️' };
+    return { label: t('status_critical') || 'CRITICAL — IMMEDIATE ACTION', class: 'status-critical', icon: '🚨' };
   };
 
-  const activeReport = getTranslatedClimateReport(report, lang) || report;
+  // Derive deterministic scientific analysis from our climate operations engine
+  const variance = analyzeClimateVariance(stage, temp, humidity);
+  const stageAdvisory = getInstarAdvisory(stage, lang);
+  const overallStatus = report ? report.status : variance.overallStatus;
+  const statusBadge = getStatusBadge(overallStatus);
 
   return (
     <div className="climate-container">
@@ -77,24 +74,24 @@ function ClimateAdvisory() {
       <div className="page-header">
         <div className="header-icon">🌡️</div>
         <div>
-          <h1 className="header-title">{t('climate_title') || 'Silkworm Climate Advisory'}</h1>
-          <p className="header-subtitle">{t('climate_subtitle') || 'Real-time temperature and humidity rule-based expert system'}</p>
+          <h1 className="header-title">{t('climate_title') || 'Silkworm Rearing Climate Advisory'}</h1>
+          <p className="header-subtitle">{t('climate_subtitle') || 'Microclimate environmental regulation & disease mitigation operations engine'}</p>
         </div>
         <div className="header-badge">
-          <span className="badge-chip orange">Rule Based Engine</span>
+          <span className="badge-chip orange">{t('climate_ops_badge') || 'Rearing Operations Engine'}</span>
         </div>
       </div>
 
       <div className="climate-grid">
-        {/* Input Controls Card */}
+        {/* Left Column: Input Controls Card */}
         <div className="input-card">
-          <h3 className="card-title">{t('enter_conditions') || 'Enter Climate Conditions'}</h3>
-          <p className="card-desc">Select silkworm growth stage and measure room sensor readings</p>
+          <h3 className="card-title">{t('enter_conditions') || '1. Enter Rearing Conditions'}</h3>
+          <p className="card-desc">Select silkworm growth stage and input current room sensor readings</p>
 
           <form onSubmit={handleCheck}>
             {/* Stage Dropdown */}
             <div className="form-group">
-              <label className="input-label">{t('instar_stage') || 'Instar Stage'}</label>
+              <label className="input-label">{t('instar_stage') || '🐛 Instar / Growth Stage'}</label>
               <select
                 className="form-control select-input"
                 value={stage}
@@ -102,7 +99,7 @@ function ClimateAdvisory() {
               >
                 {stagesList.map((s) => (
                   <option key={s} value={s}>
-                    {s} — {SILKWORM_CLIMATE_RULES[s].desc}
+                    {s} — {INSTAR_CLIMATE_KNOWLEDGE[s][lang]?.stage_title || INSTAR_CLIMATE_KNOWLEDGE[s].en.stage_title}
                   </option>
                 ))}
               </select>
@@ -110,17 +107,17 @@ function ClimateAdvisory() {
 
             {/* Target info box */}
             <div className="target-info-box">
-              <div className="target-title">{t('target_params_for') || 'Ideal Parameters for'} {stage}:</div>
+              <div className="target-title">{t('target_params_for') || 'Target Parameters for'} {stage}:</div>
               <div className="target-values">
-                <span>🌡️ Temp: <strong>{SILKWORM_CLIMATE_RULES[stage].min_temp} - {SILKWORM_CLIMATE_RULES[stage].max_temp} °C</strong></span>
-                <span>💧 Humidity: <strong>{SILKWORM_CLIMATE_RULES[stage].min_hum} - {SILKWORM_CLIMATE_RULES[stage].max_hum} %</strong></span>
+                <span>🌡️ Temp: <strong>{variance.ideal_temp_min} - {variance.ideal_temp_max} °C</strong></span>
+                <span>💧 Humidity: <strong>{variance.ideal_hum_min} - {variance.ideal_hum_max} %</strong></span>
               </div>
             </div>
 
             {/* Temp & Humidity inputs */}
             <div className="inputs-row">
               <div className="form-group">
-                <label className="input-label">{t('room_temp') || 'Room Temperature (°C)'}</label>
+                <label className="input-label">{t('room_temp') || '🌡️ Current Room Temp (°C)'}</label>
                 <input
                   type="number"
                   step="0.1"
@@ -132,7 +129,7 @@ function ClimateAdvisory() {
               </div>
 
               <div className="form-group">
-                <label className="input-label">{t('relative_humidity') || 'Relative Humidity (%)'}</label>
+                <label className="input-label">{t('room_humidity') || '💧 Current Humidity (%)'}</label>
                 <input
                   type="number"
                   step="0.1"
@@ -146,72 +143,164 @@ function ClimateAdvisory() {
 
             {/* Quick Test Presets */}
             <div className="preset-selector">
-              <span className="preset-label">Quick Test Scenarios:</span>
+              <span className="preset-label">{t('preset_label') || 'Test Scenarios:'}</span>
               <div className="preset-buttons">
                 <button
                   type="button"
                   className="preset-btn safe"
-                  onClick={() => handlePreset('Instar 1', 27, 88)}
+                  onClick={() => handlePreset('Instar 1', 27.0, 88.0)}
                 >
-                  🟢 Ideal (Safe)
+                  {t('preset_safe') || '🟢 Safe Stage 1'}
                 </button>
                 <button
                   type="button"
                   className="preset-btn warning"
-                  onClick={() => handlePreset('Instar 3', 29, 82)}
+                  onClick={() => handlePreset('Instar 3', 29.0, 82.0)}
                 >
-                  🟡 High Temp (Warning)
+                  {t('preset_high_temp') || '🟡 High Temp (30°C)'}
                 </button>
                 <button
                   type="button"
                   className="preset-btn critical"
-                  onClick={() => handlePreset('Instar 5', 31, 90)}
+                  onClick={() => handlePreset('Instar 5', 31.0, 92.0)}
                 >
-                  🔴 Severe Heat & Wet (Critical)
+                  {t('preset_high_hum') || '🔴 High Humidity (95%)'}
                 </button>
               </div>
             </div>
 
             {error && <div className="error-alert">⚠️ {error}</div>}
 
-            <button type="submit" className="btn-submit" disabled={loading}>
-              {loading ? 'Evaluating...' : '🌡️ Check Climate Status'}
+            <button type="submit" className="btn-submit orange-btn" disabled={loading}>
+              {loading ? (
+                <>
+                  <span className="spinner orange-spin"></span> Evaluating Microclimate...
+                </>
+              ) : (
+                t('calculate_advisory') || '⚡ Calculate Climate Advisory'
+              )}
             </button>
           </form>
         </div>
 
-        {/* Results Card */}
+        {/* Right Column: 5-Tier Decision-Support Operations Dashboard */}
         <div className="result-card">
-          {activeReport && (
-            <div className="climate-report">
-              <div className={`status-banner ${getStatusBadge(activeReport.status).class}`}>
-                <div className="status-header">
-                  <span className="status-icon">{getStatusBadge(activeReport.status).icon}</span>
-                  <div>
-                    <h2 className="status-title">{activeReport.status}</h2>
-                    <p className="status-sub">For {activeReport.stage}</p>
-                  </div>
+          <div className="climate-operations-report">
+            {/* Top Banner */}
+            <div className={`status-banner ${statusBadge.class}`}>
+              <div className="status-header">
+                <span className="status-icon">{statusBadge.icon}</span>
+                <div>
+                  <h2 className="status-title">{statusBadge.label}</h2>
+                  <p className="status-sub">
+                    {stage} · {stageAdvisory.stage_title}
+                  </p>
                 </div>
               </div>
-
-              <div className="report-section">
-                <h3>Recommended Corrections</h3>
-                {activeReport.temperature_correction && (
-                  <p><strong>Temperature:</strong> {activeReport.temperature_correction}</p>
-                )}
-                {activeReport.humidity_correction && (
-                  <p><strong>Humidity:</strong> {activeReport.humidity_correction}</p>
-                )}
-              </div>
-
-              {activeReport.impact_summary && (
-                <div className="report-section impact-box">
-                  <h3>Potential Impact on Silkworms</h3>
-                  <p>{activeReport.impact_summary}</p>
-                </div>
-              )}
             </div>
-          )}
+
+            {/* Tier 1: Parameter Variance Matrix */}
+            <div className="ops-card section-variance">
+              <div className="ops-card-header">
+                <span className="ops-icon">📊</span>
+                <h4>{t('climate_variance_title') || 'Thermal & Humidity Variance Analysis'}</h4>
+              </div>
+              <div className="variance-grid">
+                {/* Temperature Card */}
+                <div className={`variance-item var-${variance.tempStatus}`}>
+                  <div className="var-header">
+                    <span className="var-title">🌡️ Temperature</span>
+                    <span className={`var-pill pill-${variance.tempStatus}`}>
+                      {variance.tempDelta === 0 ? t('variance_optimal') : `${variance.tempDelta > 0 ? '+' : ''}${variance.tempDelta} °C`}
+                    </span>
+                  </div>
+                  <div className="var-metrics">
+                    <span className="metric-current">{variance.currentTemp}°C</span>
+                    <span className="metric-target">Target: {variance.ideal_temp_min} – {variance.ideal_temp_max}°C</span>
+                  </div>
+                  {report?.temperature_correction && (
+                    <p className="var-correction">{report.temperature_correction}</p>
+                  )}
+                </div>
+
+                {/* Humidity Card */}
+                <div className={`variance-item var-${variance.humStatus}`}>
+                  <div className="var-header">
+                    <span className="var-title">💧 Relative Humidity</span>
+                    <span className={`var-pill pill-${variance.humStatus}`}>
+                      {variance.humDelta === 0 ? t('variance_optimal') : `${variance.humDelta > 0 ? '+' : ''}${variance.humDelta} %`}
+                    </span>
+                  </div>
+                  <div className="var-metrics">
+                    <span className="metric-current">{variance.currentHumidity}%</span>
+                    <span className="metric-target">Target: {variance.ideal_hum_min} – {variance.ideal_hum_max}%</span>
+                  </div>
+                  {report?.humidity_correction && (
+                    <p className="var-correction">{report.humidity_correction}</p>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Tier 2: Biological Vulnerability & Pathology */}
+            <div className="ops-card section-pathology">
+              <div className="ops-card-header">
+                <span className="ops-icon">🔬</span>
+                <h4>{t('section_biological_vuln') || 'Stage Biological Vulnerability & Pathology'}</h4>
+              </div>
+              <p className="biological-intro">{stageAdvisory.biological_context}</p>
+              <div className="pathogen-risk-box">
+                <span className="risk-tag">⚠️ Critical Vulnerability:</span>
+                <p className="risk-text">{stageAdvisory.pathogen_risks}</p>
+              </div>
+            </div>
+
+            {/* Tier 3: Practical Physical Interventions (SOP) */}
+            <div className="ops-card section-interventions">
+              <div className="ops-card-header">
+                <span className="ops-icon">🛠️</span>
+                <h4>{t('section_room_interventions') || 'Practical Physical Interventions (Room Climate SOP)'}</h4>
+              </div>
+              <ol className="intervention-steps">
+                {stageAdvisory.room_interventions.map((step, idx) => (
+                  <li key={idx} className="intervention-step-item">
+                    <span className="step-badge">{idx + 1}</span>
+                    <span className="step-desc">{step}</span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+
+            {/* Tier 4: 24-Hour Checklist */}
+            <div className="ops-card section-checklist">
+              <div className="ops-card-header">
+                <span className="ops-icon">📋</span>
+                <h4>{t('section_monitoring_check') || '24-Hour Rearing Bed Checklist & Next Steps'}</h4>
+              </div>
+              <ul className="checklist-items">
+                {stageAdvisory.monitoring_checklist.map((item, idx) => (
+                  <li key={idx}>
+                    <span className="check-box">☑</span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Tier 5: Audit Trail & History Link */}
+            <div className="climate-history-footer">
+              <span className="history-status">
+                ✅ Recorded in Cloud Firestore Rearing History
+              </span>
+              <button
+                type="button"
+                className="btn-history-view"
+                onClick={() => navigate('/history?tab=climate')}
+              >
+                {t('btn_view_climate_history') || '📜 View Climate Log in History'}
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

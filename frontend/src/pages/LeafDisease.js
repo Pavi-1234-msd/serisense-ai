@@ -1,17 +1,21 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { predictLeafDisease } from '../services/api';
 import { useLanguage } from '../context/LanguageContext';
-import { getTranslatedLeafDisease } from '../i18n/diseaseContent';
+import { getLeafDiseaseAdvisory, getConfidenceAssessment } from '../services/leafAdvisories';
+import { validateIsLeafImage } from '../utils/imageValidator';
 import './LeafDisease.css';
 
 function LeafDisease() {
   const { t, lang } = useLanguage();
+  const navigate = useNavigate();
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
   const [dragActive, setDragActive] = useState(false);
+  const [invalidImageInfo, setInvalidImageInfo] = useState(null);
 
   // Handle File Selection
   const handleFileChange = (file) => {
@@ -21,6 +25,7 @@ function LeafDisease() {
       return;
     }
     setError(null);
+    setInvalidImageInfo(null);
     setSelectedFile(file);
     setPreviewUrl(URL.createObjectURL(file));
     setResult(null);
@@ -73,6 +78,7 @@ function LeafDisease() {
   // Sample leaf selector for fast testing
   const handleSampleSelect = async (sampleName) => {
     setError(null);
+    setInvalidImageInfo(null);
     let sampleFile;
     if (sampleName === 'rust') {
       sampleFile = await generateValidJpegFile('mulberry_leaf_rust_sample.jpg', '#388e3c', '#d84315');
@@ -98,32 +104,60 @@ function LeafDisease() {
 
     setLoading(true);
     setError(null);
+    setInvalidImageInfo(null);
 
     try {
+      // Validate image before sending to backend
+      if (selectedFile) {
+        const valCheck = await validateIsLeafImage(selectedFile);
+        if (!valCheck.isLeaf) {
+          setInvalidImageInfo(valCheck);
+          setLoading(false);
+          return;
+        }
+      }
+
       const res = await predictLeafDisease(selectedFile);
       if (res.success && res.data) {
         setResult({
           class: res.data.disease,
           confidence: res.data.confidence,
           probabilities: res.data.predictions,
-          symptoms: res.data.report?.symptoms || [],
-          immediate_actions: res.data.report?.immediate_actions || [],
-          prevention: res.data.report?.prevention || [],
-          chemical: res.data.report?.chemical,
-          dosage: res.data.report?.dosage,
-          silkworm_impact: res.data.report?.silkworm_impact
+          backendReport: res.data.report || {}
         });
       } else {
         setError(res.message || 'Failed to classify leaf image.');
       }
     } catch (err) {
-      setError(err.response?.data?.message || err.message || 'Failed to analyze leaf image. Please check backend API.');
+      setError(err.response?.data?.message || err.message || 'Failed to analyze leaf image. Please verify backend API connectivity.');
     } finally {
       setLoading(false);
     }
   };
 
-  const activeResult = getTranslatedLeafDisease(result, lang) || result;
+  // Build the structured advisory and confidence assessment from backend prediction
+  const advisory = result ? getLeafDiseaseAdvisory(result.class, lang) : null;
+  const confidenceAssessment = result ? getConfidenceAssessment(result.confidence, lang) : null;
+
+  // Concern level badge helper
+  const getConcernBadge = (level) => {
+    if (level === 'low_concern') {
+      return {
+        text: t('advisory_low_concern') || 'Low Concern · Healthy Foliage',
+        className: 'badge-low-concern'
+      };
+    } else if (level === 'moderate_concern') {
+      return {
+        text: t('advisory_moderate_concern') || 'Moderate Concern · Early Intervention',
+        className: 'badge-moderate-concern'
+      };
+    } else {
+      return {
+        text: t('advisory_requires_attention') || 'Requires Attention · Urgent Field Action',
+        className: 'badge-attention'
+      };
+    }
+  };
 
   return (
     <div className="leaf-disease-container">
@@ -132,7 +166,7 @@ function LeafDisease() {
         <div className="header-icon">🌿</div>
         <div>
           <h1 className="header-title">{t('leaf_title') || 'Mulberry Leaf Disease Detection'}</h1>
-          <p className="header-subtitle">{t('leaf_subtitle') || 'Upload or capture a mulberry leaf image for instant MobileNetV2 CNN analysis'}</p>
+          <p className="header-subtitle">{t('leaf_subtitle') || 'AI-assisted crop protection and decision-support system for sericulture farmers'}</p>
         </div>
         <div className="header-badge">
           <span className="badge-chip">MobileNetV2 CNN</span>
@@ -142,7 +176,7 @@ function LeafDisease() {
       <div className="content-grid">
         {/* Left Column: Upload Box */}
         <div className="upload-card">
-          <h3 className="card-title">{t('upload_title') || 'Upload Leaf Image'}</h3>
+          <h3 className="card-title">{t('upload_title') || '1. Upload Leaf Photo'}</h3>
           <p className="card-desc">{t('upload_desc') || 'Select a leaf photo from your gallery or use camera input'}</p>
 
           <form onSubmit={handleSubmit}>
@@ -187,28 +221,28 @@ function LeafDisease() {
 
             {/* Quick Sample Selector */}
             <div className="sample-selector">
-              <span className="sample-label">Quick Test Samples:</span>
+              <span className="sample-label">{t('sample_label') || 'Quick Test Samples:'}</span>
               <div className="sample-buttons">
                 <button
                   type="button"
                   className="sample-btn rust"
                   onClick={() => handleSampleSelect('rust')}
                 >
-                  Leaf Rust
+                  {t('sample_rust') || '🍂 Leaf Rust'}
                 </button>
                 <button
                   type="button"
                   className="sample-btn spot"
                   onClick={() => handleSampleSelect('spot')}
                 >
-                  Leaf Spot
+                  {t('sample_spot') || '🟤 Leaf Spot'}
                 </button>
                 <button
                   type="button"
                   className="sample-btn healthy"
                   onClick={() => handleSampleSelect('healthy')}
                 >
-                  Healthy Leaf
+                  {t('sample_healthy') || '🍃 Healthy Leaf'}
                 </button>
               </div>
             </div>
@@ -222,83 +256,226 @@ function LeafDisease() {
             >
               {loading ? (
                 <>
-                  <span className="spinner"></span> Analyzing Leaf with MobileNetV2...
+                  <span className="spinner"></span> {t('analyzing_leaf') || 'Analyzing Leaf with AI...'}
                 </>
               ) : (
-                '🔬 Analyze Leaf with AI'
+                t('btn_run_ai') || '🔬 Analyze Leaf with AI'
               )}
             </button>
           </form>
         </div>
 
-        {/* Right Column: Prediction Results */}
+        {/* Right Column: Prediction Results & Decision Support */}
         <div className="result-card">
-          {!activeResult && !loading && (
-            <div className="empty-state">
-              <div className="empty-icon">🔬</div>
-              <h3>AI Inference Engine Ready</h3>
-              <p>Upload a clear photograph of a mulberry leaf to run instant MobileNetV2 classification and receive backend treatment recommendations.</p>
+          {/* Invalid Image Fallback */}
+          {invalidImageInfo && !loading && (
+            <div className="invalid-image-card">
+              <div className="invalid-icon">⚠️</div>
+              <h3 className="invalid-title">{t('invalid_image_title') || 'Not a Mulberry Leaf / Invalid Image'}</h3>
+              <p className="invalid-desc">{invalidImageInfo.reason || (t('invalid_image_desc') || 'The uploaded photo does not appear to contain a clear mulberry leaf.')}</p>
+              <div className="invalid-tips">
+                <h4>{t('invalid_image_tips_header') || '💡 Tips for Accurate AI Diagnosis:'}</h4>
+                <ul>
+                  <li>✓ {t('invalid_image_tip_1') || 'Ensure the photo shows a clear, close-up mulberry leaf.'}</li>
+                  <li>✓ {t('invalid_image_tip_2') || 'Avoid uploading screenshots, charts, documents, or unrelated objects.'}</li>
+                  <li>✓ {t('invalid_image_tip_3') || 'Take photos under bright, natural daylight with leaf filling the frame.'}</li>
+                </ul>
+              </div>
+              <button
+                type="button"
+                className="btn-retry"
+                onClick={() => document.getElementById('leafFileInput').click()}
+              >
+                📷 {t('btn_change_photo') || 'Upload Another Photo'}
+              </button>
             </div>
           )}
 
+          {/* Empty State */}
+          {!result && !loading && !invalidImageInfo && (
+            <div className="empty-state">
+              <div className="empty-icon">🔬</div>
+              <h3>{t('no_prediction') || 'AI Decision Support Ready'}</h3>
+              <p>{t('no_prediction_desc') || 'Upload a clear photograph of a mulberry leaf to run instant classification and receive structured field recommendations.'}</p>
+            </div>
+          )}
+
+          {/* Loading State */}
           {loading && (
             <div className="loading-state">
               <div className="loading-spinner"></div>
-              <h3>Analyzing Mulberry Leaf...</h3>
-              <p>Extracting feature vectors through MobileNetV2 CNN layers</p>
+              <h3>{t('analyzing_leaf') || 'Analyzing Mulberry Leaf...'}</h3>
+              <p>{t('analyzing_sub') || 'Extracting deep feature vectors through MobileNetV2 CNN layers'}</p>
             </div>
           )}
 
-          {activeResult && !loading && (
-            <div className="prediction-report">
-              {/* Top Result Banner */}
-              <div className={`report-header ${activeResult.class === 'Disease Free leaves' ? 'status-healthy' : 'status-diseased'}`}>
+          {/* Structured Agricultural Decision-Support Report */}
+          {result && advisory && !loading && (
+            <div className="prediction-report decision-support-report">
+              {/* Top Banner: Preliminary Notice */}
+              <div className="assessment-preliminary-header">
+                <span className="badge-assessment-tag">
+                  {t('ai_leaf_assessment_badge') || 'AI LEAF ASSESSMENT'}
+                </span>
+                <span className="text-preliminary-disclaimer">
+                  ℹ️ {t('preliminary_assessment_notice') || 'AI-based preliminary assessment · Not a certified laboratory diagnosis'}
+                </span>
+              </div>
+
+              {/* Disease Name & Confidence Card */}
+              <div className={`report-header ${advisory.severityLevel === 'low_concern' ? 'status-healthy' : 'status-diseased'}`}>
                 <div className="result-main">
-                  <span className="result-label">DIAGNOSIS RESULT</span>
-                  <h2 className="result-disease">{activeResult.class}</h2>
+                  <span className="result-label">{advisory.statusHuman}</span>
+                  <h2 className="result-disease">{advisory.title}</h2>
                 </div>
                 <div className="result-confidence">
-                  <span className="conf-value">{activeResult.confidence}%</span>
-                  <span className="conf-label">Confidence</span>
+                  <span className="conf-value">{result.confidence}%</span>
+                  <span className="conf-label">{t('confidence') || 'Confidence'}</span>
                 </div>
               </div>
 
-              {/* Saved to Backend Indicator */}
-              <div className="saved-backend-badge" style={{ margin: '10px 0', padding: '8px 12px', background: '#e8f5e9', border: '1px solid #81c784', borderRadius: '8px', color: '#1b5e20', fontSize: '0.85rem' }}>
-                ✅ Prediction automatically saved to your account history in database!
-              </div>
-
-              {/* Chemical Advice Notice */}
-              {activeResult.chemical && activeResult.chemical !== 'None required' && (
-                <div className="chemical-advice-card" style={{ margin: '14px 0', padding: '14px', background: '#fff3e0', borderLeft: '4px solid #ff9800', borderRadius: '8px' }}>
-                  <h4 style={{ color: '#e65100', margin: '0 0 6px 0' }}>💊 Recommended Management Guidance</h4>
-                  <p style={{ margin: '0 0 4px 0', fontSize: '0.9rem' }}><strong>Chemical:</strong> {activeResult.chemical}</p>
-                  <p style={{ margin: '0 0 6px 0', fontSize: '0.9rem' }}><strong>Dosage:</strong> {activeResult.dosage}</p>
-                  <span style={{ fontSize: '0.78rem', color: '#666', fontStyle: 'italic' }}>
-                    * Verify product label and local agricultural officer instructions before application.
+              {/* Status & Qualitative Risk Row */}
+              <div className="assessment-meta-row">
+                <div className="meta-item">
+                  <span className="meta-item-label">{t('advisory_concern_label') || 'Advisory Risk Level'}</span>
+                  <span className={`meta-concern-badge ${getConcernBadge(advisory.severityLevel).className}`}>
+                    {getConcernBadge(advisory.severityLevel).text}
                   </span>
                 </div>
-              )}
+                <div className="meta-item">
+                  <span className="meta-item-label">{t('confidence') || 'Confidence Level'}</span>
+                  <span className={`meta-conf-badge conf-${confidenceAssessment.level}`}>
+                    {confidenceAssessment.label}
+                  </span>
+                </div>
+              </div>
 
-              {/* Silkworm Impact */}
-              {activeResult.silkworm_impact && (
-                <div className="impact-card" style={{ margin: '14px 0', padding: '14px', background: '#f1f8e9', borderRadius: '8px' }}>
-                  <h4 style={{ color: '#33691e', margin: '0 0 6px 0' }}>🐛 Impact on Silkworms</h4>
-                  <p style={{ margin: 0, fontSize: '0.9rem', color: '#2e7d32' }}>{activeResult.silkworm_impact}</p>
+              {/* Low Confidence Advisory Alert if confidence < 65% */}
+              {confidenceAssessment.isLow && (
+                <div className="low-confidence-alert">
+                  <span className="alert-icon">⚠️</span>
+                  <div className="alert-body">
+                    <strong>{confidenceAssessment.label}</strong>
+                    <p>{confidenceAssessment.lowAdvice}</p>
+                  </div>
                 </div>
               )}
 
-              {/* Actions & Prevention */}
-              {activeResult.immediate_actions && activeResult.immediate_actions.length > 0 && (
-                <div className="actions-card" style={{ margin: '14px 0' }}>
-                  <h4 style={{ color: '#1b4332' }}>⚡ Immediate Actions</h4>
-                  <ul>
-                    {activeResult.immediate_actions.map((act, idx) => (
-                      <li key={idx} style={{ fontSize: '0.9rem', margin: '4px 0' }}>{act}</li>
-                    ))}
-                  </ul>
+              {/* Short Clinical Explanation */}
+              <div className="explanation-card">
+                <p className="explanation-text">{advisory.shortExplanation}</p>
+              </div>
+
+              {/* Section 1: What To Do Now (Prominent Numbered Action Plan) */}
+              <div className="advisory-section section-immediate">
+                <div className="section-header">
+                  <span className="section-icon">⚡</span>
+                  <h4>{t('section_what_to_do_now') || 'What to Do Now (Immediate Field Actions)'}</h4>
                 </div>
-              )}
+                <ol className="action-steps-list">
+                  {advisory.immediateActions.map((action, idx) => (
+                    <li key={idx} className="action-step-item">
+                      <span className="step-number">{idx + 1}</span>
+                      <span className="step-text">{action}</span>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+
+              {/* Section 2: Management Protocol */}
+              <div className="advisory-section section-management">
+                <div className="section-header">
+                  <span className="section-icon">🌱</span>
+                  <h4>{t('section_management') || 'Recommended Crop & Plot Management'}</h4>
+                </div>
+                <ul className="guidance-bullet-list">
+                  {advisory.management.map((item, idx) => (
+                    <li key={idx}>
+                      <span className="bullet-dot">•</span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Section 3: What To Avoid */}
+              <div className="advisory-section section-avoid">
+                <div className="section-header">
+                  <span className="section-icon">⚠️</span>
+                  <h4>{t('section_what_to_avoid') || 'What NOT to Do (Safety & Best Practices)'}</h4>
+                </div>
+                <ul className="guidance-bullet-list avoid-list">
+                  {advisory.avoid.map((item, idx) => (
+                    <li key={idx}>
+                      <span className="avoid-x">✕</span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Section 4: Crop Monitoring Plan */}
+              <div className="advisory-section section-monitoring">
+                <div className="section-header">
+                  <span className="section-icon">🔍</span>
+                  <h4>{t('section_monitoring_plan') || 'Crop Monitoring Plan & Follow-Up'}</h4>
+                </div>
+                <ul className="guidance-bullet-list">
+                  {advisory.monitoring.map((item, idx) => (
+                    <li key={idx}>
+                      <span className="bullet-dot">🔎</span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Section 5: When to Seek Agricultural Expert Help */}
+              <div className="advisory-section section-expert">
+                <div className="section-header">
+                  <span className="section-icon">👨‍🌾</span>
+                  <h4>{t('section_when_expert_help') || 'When to Seek Agricultural Expert Help'}</h4>
+                </div>
+                <p className="expert-text">{advisory.expertHelp}</p>
+              </div>
+
+              {/* Section 6: Silkworm Batch Safety Card */}
+              <div className={`silkworm-safety-card ${advisory.silkwormSafety === 'safe' ? 'safety-safe' : 'safety-unsafe'}`}>
+                <div className="safety-card-header">
+                  <span className="safety-icon">{advisory.silkwormSafety === 'safe' ? '✅' : '🛑'}</span>
+                  <h4>{t('section_silkworm_safety_title') || 'Silkworm Batch Feeding Safety'}</h4>
+                </div>
+                <p className="safety-summary">
+                  {advisory.silkwormSafety === 'safe' 
+                    ? (t('safe_to_feed') || 'Safe to Feed: Healthy leaf foliar profile supports optimal silkworm nutrition.')
+                    : (t('unsafe_to_feed') || 'UNSAFE FOR FEEDING: High risk of silkworm nutritional distress, digestive disorder, and cocoon quality loss.')}
+                </p>
+                {result.backendReport?.silkworm_impact && (
+                  <p className="safety-details">{result.backendReport.silkworm_impact}</p>
+                )}
+              </div>
+
+              {/* Chemical Disclaimer Footer */}
+              <div className="chemical-regulatory-disclaimer">
+                <span className="disclaimer-icon">📋</span>
+                <p>
+                  {t('chemical_disclaimer_notice') || 'Agricultural chemicals must follow locally approved sericultural package of practices. Always observe mandatory waiting safety periods before feeding harvested leaves to silkworms.'}
+                </p>
+              </div>
+
+              {/* History Confirmation & Navigation */}
+              <div className="history-link-footer">
+                <span className="history-saved-indicator">
+                  ✅ Saved to Cloud Firestore History
+                </span>
+                <button
+                  type="button"
+                  className="btn-history-nav"
+                  onClick={() => navigate('/history?tab=leaf')}
+                >
+                  {t('btn_view_history_log') || '📜 View Scan in History'}
+                </button>
+              </div>
             </div>
           )}
         </div>

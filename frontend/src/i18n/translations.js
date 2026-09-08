@@ -108,6 +108,22 @@ export const translations = {
     invalid_image_tip_2: "Avoid uploading screenshots, graphs, text documents, or unrelated objects.",
     invalid_image_tip_3: "Take photos under natural, bright lighting with leaf filling the frame.",
 
+    // Structured Agricultural Leaf Advisory Sections
+    ai_leaf_assessment_badge: "AI Leaf Assessment",
+    preliminary_assessment_notice: "AI-based preliminary assessment · Not a certified laboratory diagnosis",
+    advisory_concern_label: "Advisory Risk Level",
+    advisory_low_concern: "Low Concern · Healthy Foliage",
+    advisory_moderate_concern: "Moderate Concern · Early Intervention",
+    advisory_requires_attention: "Requires Attention · Urgent Field Action",
+    section_what_to_do_now: "⚡ What to Do Now (Immediate Field Actions)",
+    section_management: "🌱 Recommended Crop & Plot Management",
+    section_what_to_avoid: "⚠️ What NOT to Do (Safety & Best Practices)",
+    section_monitoring_plan: "🔍 Crop Monitoring Plan & Follow-Up",
+    section_when_expert_help: "👨‍🌾 When to Seek Agricultural Expert Help",
+    section_silkworm_safety_title: "🐛 Silkworm Batch Feeding Safety",
+    btn_view_history_log: "📜 View Scan in History",
+    chemical_disclaimer_notice: "Agricultural chemicals must follow locally approved sericultural package of practices. Always observe mandatory waiting safety periods before feeding harvested leaves to silkworms.",
+
     // Climate Advisory
     climate_title: "Silkworm Rearing Climate Advisory",
     climate_subtitle: "Rule-based climate control engine. Compare current rearing room temperature and humidity against ideal parameters for all 6 instar stages.",
@@ -128,6 +144,17 @@ export const translations = {
     required_corrections: "🛠️ Required Environmental Corrections",
     biological_impact: "🐛 Silkworm Biological Impact",
     sop_title: "💡 Standard Operating Procedures (SOP)",
+
+    // Enhanced Microclimate Operations Dashboard Keys
+    climate_ops_badge: "Rearing Operations Engine",
+    climate_variance_title: "📊 Thermal & Humidity Variance Analysis",
+    variance_optimal: "Within Ideal Range (0.0 Delta)",
+    variance_high: "Above Ideal Upper Threshold",
+    variance_low: "Below Ideal Lower Threshold",
+    section_biological_vuln: "🔬 Stage Biological Vulnerability & Pathology",
+    section_room_interventions: "🛠️ Practical Physical Interventions (Room Climate SOP)",
+    section_monitoring_check: "📋 24-Hour Rearing Bed Checklist & Next Steps",
+    btn_view_climate_history: "📜 View Climate Log in History",
 
     // Silkworm Disease
     silkworm_title: "Silkworm Disease Symptom Checker",
@@ -276,6 +303,22 @@ export const translations = {
     invalid_image_tip_2: "வரைபடங்கள், ஆவணங்கள் அல்லது பிற பொருட்களைப் பதிவேற்றுவதைத் தவிர்க்கவும்.",
     invalid_image_tip_3: "இயற்கையான வெளிச்சத்தில் தெளிவான புகைப்படம் எடுக்கவும்.",
 
+    // Structured Agricultural Leaf Advisory Sections
+    ai_leaf_assessment_badge: "AI இலை மதிப்பீடு",
+    preliminary_assessment_notice: "AI-அடிப்படையிலான ஆரம்பநிலை மதிப்பீடு · சான்றளிக்கப்பட்ட ஆய்வக நோய் பரிசோதனை அல்ல",
+    advisory_concern_label: "ஆலோசனை ஆபத்து நிலை",
+    advisory_low_concern: "குறைந்த கவலை · ஆரோக்கியமான இலைகள்",
+    advisory_moderate_concern: "மிதமான கவலை · ஆரம்ப நிலை மேலாண்மை தேவை",
+    advisory_requires_attention: "கவனம் தேவை · உடனடி கள நடவடிக்கை",
+    section_what_to_do_now: "⚡ இப்போது என்ன செய்ய வேண்டும் (உடனடி கள நடவடிக்கைகள்)",
+    section_management: "🌱 பரிந்துரைக்கப்பட்ட பயிர் & பண்ணை மேலாண்மை",
+    section_what_to_avoid: "⚠️ எதைத் தவிர்க்க வேண்டும் (பாதுகாப்பு எச்சரிக்கைகள்)",
+    section_monitoring_plan: "🔍 பயிர் கண்காணிப்புத் திட்டம் & தொடர் பரிசோதனை",
+    section_when_expert_help: "👨‍🌾 வேளாண் நிபுணர் உதவியை எப்போது நாட வேண்டும்",
+    section_silkworm_safety_title: "🐛 பட்டுப்புழு ஊட்ட பாதுகாப்பு",
+    btn_view_history_log: "📜 வரலாற்றுப் பதிவைக் காண்க",
+    chemical_disclaimer_notice: "வேளாண் ரசாயனங்கள் உள்ளூர் பட்டுவளர்ப்பு துறை வழிகாட்டுதல்களைப் பின்பற்ற வேண்டும். அறுவடை செய்த இலைகளை உணவளிக்கும் முன் பாதுகாப்பு காத்திருப்பு காலத்தை கண்டிப்பாக பின்பற்றவும்.",
+
     // Climate Advisory
     climate_title: "பட்டுப்புழு வளர்ப்பு காலநிலை ஆலோசனை",
     climate_subtitle: "அனைத்து 6 வளர்ச்சி நிலைகளுக்கும் உகந்த வெப்பநிலை மற்றும் ஈரப்பதத்தை ஒப்பிட்டு ஆலோசனை பெறவும்.",
@@ -296,6 +339,17 @@ export const translations = {
     required_corrections: "🛠️ செய்ய வேண்டிய சுற்றுச்சூழல் மாற்றங்கள்",
     biological_impact: "🐛 பட்டுப்புழு உயிரியல் பாதிப்பு",
     sop_title: "💡 நிலையான செயல்பாட்டு வழிமுறைகள் (SOP)",
+
+    // Enhanced Microclimate Operations Dashboard Keys
+    climate_ops_badge: "வளர்ப்பு செயல்பாட்டு எஞ்சின்",
+    climate_variance_title: "📊 வெப்பநிலை மற்றும் ஈரப்பதம் மாறுபாட்டு பகுப்பாய்வு",
+    variance_optimal: "சரியான வரம்பிற்குள் உள்ளது (0.0 மாறுபாடு)",
+    variance_high: "அனுமதிக்கப்பட்ட உச்ச வரம்பை விட அதிகம்",
+    variance_low: "அனுமதிக்கப்பட்ட கீழ் வரம்பை விடக் குறைவு",
+    section_biological_vuln: "🔬 வளர்ச்சி நிலை உயிரியல் பாதிப்புகள் & நோய்க்கிருமி ஆபத்து",
+    section_room_interventions: "🛠️ நடைமுறை அறை மேலாண்மை முறைகள் (SOP நடவடிக்கைகள்)",
+    section_monitoring_check: "📋 அடுத்த 24 மணி நேர கண்காணிப்பு பட்டியல்",
+    btn_view_climate_history: "📜 காலநிலை வரலாற்று பதிவைக் காண்க",
 
     // Silkworm Disease
     silkworm_title: "பட்டுப்புழு நோய் அறிகுறி சோதனையாளர்",
@@ -420,6 +474,22 @@ export const translations = {
     invalid_image_tip_2: "ದಾಖಲೆಗಳು ಅಥವಾ ಇತರ ವಸ್ತುಗಳನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಬೇಡಿ.",
     invalid_image_tip_3: "ಉತ್ತಮ ಬೆಳಕಿನಲ್ಲಿ ಫೋಟೋ ತೆಗೆಯಿರಿ.",
 
+    // Structured Agricultural Leaf Advisory Sections
+    ai_leaf_assessment_badge: "AI ಎಲೆ ಮೌಲ್ಯಮಾಪನ",
+    preliminary_assessment_notice: "AI-ಆಧಾರಿತ ಪ್ರಾಥಮಿಕ ಮೌಲ್ಯಮಾಪನ · ಇದು ಪ್ರಮಾಣೀಕೃತ ಪ್ರಯೋಗಾಲಯ ರೋಗನಿರ್ಣಯವಲ್ಲ",
+    advisory_concern_label: "ಸಲಹಾ ಅಪಾಯದ ಮಟ್ಟ",
+    advisory_low_concern: "ಕಡಿಮೆ ಕಾಳಜಿ · ಆರೋಗ್ಯಕರ ಎಲೆಗಳು",
+    advisory_moderate_concern: "ಮಧ್ಯಮ ಕಾಳಜಿ · ಆರಂಭಿಕ ಹಂತದ ನಿರ್ವಹಣೆ ಅಗತ್ಯ",
+    advisory_requires_attention: "ಹೆಚ್ಚಿನ ಗಮನ ಅಗತ್ಯ · ತುರ್ತು ಕ್ಷೇತ್ರ ಕ್ರಮ",
+    section_what_to_do_now: "⚡ ಈಗ ಏನು ಮಾಡಬೇಕು (ತಕ್ಷಣದ ಕ್ಷೇತ್ರ ಕ್ರಮಗಳು)",
+    section_management: "🌱 ಶಿಫಾರಸು ಮಾಡಿದ ಬೆಳೆ ಮತ್ತು ತೋಟ ನಿರ್ವಹಣೆ",
+    section_what_to_avoid: "⚠️ ಏನನ್ನು ತಪ್ಪಿಸಬೇಕು (ಸುರಕ್ಷತಾ ಎಚ್ಚರಿಕೆಗಳು)",
+    section_monitoring_plan: "🔍 ಬೆಳೆ ಮೇಲ್ವಿಚಾರಣಾ ಯೋಜನೆ ಮತ್ತು ಮರುಪರಿಶೀಲನೆ",
+    section_when_expert_help: "👨‍🌾 ಕೃಷಿ ತಜ್ಞರ ನೆರವು ಯಾವಾಗ ಪಡೆಯಬೇಕು",
+    section_silkworm_safety_title: "🐛 ರೇಷ್ಮೆ ಹುಳು ಆಹಾರ ಸುರಕ್ಷತೆ",
+    btn_view_history_log: "📜 ಸ್ಕ್ಯಾನ್ ಇತಿಹಾಸವನ್ನು ವೀಕ್ಷಿಸಿ",
+    chemical_disclaimer_notice: "ಕೃಷಿ ರಾಸಾಯನಿಕಗಳು ಸ್ಥಳೀಯ ರೇಷ್ಮೆ ಕೃಷಿ ಮಾರ್ಗಸೂಚಿಗಳನ್ನು ಅನುಸರಿಸಬೇಕು. ಆಹಾರ ನೀಡುವ ಮೊದಲು ಕಡ್ಡಾಯ ವಿಶ್ರಾಂತಿ ಅವಧಿಯನ್ನು ಪಾಲಿಸಿ.",
+
     climate_title: "ರೇಷ್ಮೆ ಹುಳು ಸಾಕಾಣಿಕೆ ಹವಾಮಾನ ಸಲಹೆ",
     climate_subtitle: "ಸೂಕ್ತ ತಾಪಮಾನ ಮತ್ತು ಆರ್ದ್ರತೆಯನ್ನು ಹೋಲಿಕೆ ಮಾಡಿ ಸಲಹೆ ಪಡೆಯಿರಿ.",
     enter_conditions: "1. ಸಾಕಾಣಿಕೆ ವಾತಾವರಣವನ್ನು ನಮೂದಿಸಿ",
@@ -439,6 +509,17 @@ export const translations = {
     required_corrections: "🛠️ ಅಗತ್ಯವಿರುವ ವಾತಾವರಣದ ತಿದ್ದುಪಡಿಗಳು",
     biological_impact: "🐛 ರೇಷ್ಮೆ ಹುಳುವಿನ ಜೈವಿಕ ಪರಿಣಾಮ",
     sop_title: "💡 ಪ್ರಮಾಣಿತ ಕಾರ್ಯವಿಧಾನಗಳು (SOP)",
+
+    // Enhanced Microclimate Operations Dashboard Keys
+    climate_ops_badge: "ಸಾಕಣೆ ಕಾರ್ಯಾಚರಣೆ ಎಂಜಿನ್",
+    climate_variance_title: "📊 ತಾಪಮಾನ ಮತ್ತು ಆರ್ದ್ರತೆ ವ್ಯತ್ಯಾಸ ವಿಶ್ಲೇಷಣೆ",
+    variance_optimal: "ಸೂಕ್ತ ವ್ಯಾಪ್ತಿಯಲ್ಲಿದೆ (0.0 ವ್ಯತ್ಯಾಸ)",
+    variance_high: "ಗರಿಷ್ಠ ಮಿತಿಗಿಂತ ಹೆಚ್ಚಾಗಿದೆ",
+    variance_low: "ಕನಿಷ್ಠ ಮಿತಿಗಿಂತ ಕಡಿಮೆಯಾಗಿದೆ",
+    section_biological_vuln: "🔬 ಹಂತದ ಜೈವಿಕ ಸೂಕ್ಷ್ಮತೆ ಮತ್ತು ರೋಗಾಣು ಅಪಾಯ",
+    section_room_interventions: "🛠️ ಕೋಣೆಯ ನಿರ್ವಹಣಾ ಕ್ರಮಗಳು (SOP)",
+    section_monitoring_check: "📋 ಮುಂದಿನ 24 ಗಂಟೆಗಳ ಮೇಲ್ವಿಚಾರಣಾ ಪಟ್ಟಿ",
+    btn_view_climate_history: "📜 ಹವಾಮಾನ ಇತಿಹಾಸವನ್ನು ವೀಕ್ಷಿಸಿ",
 
     silkworm_title: "ರೇಷ್ಮೆ ಹುಳು ರೋಗಲಕ್ಷಣ ತಪಾಸಣೆ",
     silkworm_subtitle: "ಗ್ರಾಸರಿ, ಫ್ಲಾಚರಿ, ಮಸ್ಕಾರ್ಡಿನ್ ಮತ್ತು ಪೆಬ್ರಿನ್ ರೋಗಗಳನ್ನು ಪತ್ತೆಹಚ್ಚಿ.",
@@ -561,6 +642,22 @@ export const translations = {
     invalid_image_tip_2: "పత్రాలు లేదా ఇతర వస్తువులను అప్‌లోడ్ చేయవద్దు.",
     invalid_image_tip_3: "మంచి వెలుగులో ఫోటో తీయండి.",
 
+    // Structured Agricultural Leaf Advisory Sections
+    ai_leaf_assessment_badge: "AI ఆకు మూల్యాంకనం",
+    preliminary_assessment_notice: "AI-ఆధారిత ప్రాథమిక అంచనా · ఇది ప్రయోగశాల వ్యాధి నిర్ధారణ కాదు",
+    advisory_concern_label: "సలహా ముప్పు స్థాయి",
+    advisory_low_concern: "తక్కువ ఆందోళన · ఆరోగ్యకరమైన ఆకులు",
+    advisory_moderate_concern: "మధ్యస్థ ఆందోళన · ప్రారంభ దశ నిర్వహణ అవసరం",
+    advisory_requires_attention: "వెంటనే శ్రద్ధ అవసరం · అత్యవసర క్షేత్ర చర్య",
+    section_what_to_do_now: "⚡ ఇప్పుడు ఏమి చేయాలి (తక్షణ క్షేత్ర చర్యలు)",
+    section_management: "🌱 సిఫార్సు చేసిన పంట & తోట నిర్వహణ",
+    section_what_to_avoid: "⚠️ ఏమి చేయకూడదు (భద్రతా హెచ్చరికలు)",
+    section_monitoring_plan: "🔍 పంట పర్యవేక్షణ ప్రణాళిక & పునఃపరిశీలన",
+    section_when_expert_help: "👨‍🌾 వ్యవసాయ నిపుణుల సలహా ఎప్పుడు తీసుకోవాలి",
+    section_silkworm_safety_title: "🐛 పట్టుపురుగుల మేత భద్రత",
+    btn_view_history_log: "📜 స్కాన్ రికార్డును చూడండి",
+    chemical_disclaimer_notice: "వ్యవసాయ రసాయనాలు స్థానిక పట్టు పరిశ్రమ మార్గదర్శకాలకు అనుగుణంగా ఉండాలి. పురుగులకు మేత వేసే ముందు తప్పనిసరిగా వేచి ఉండే వ్యవధిని పాటించండి.",
+
     climate_title: "పట్టుపురుగుల పెంపకం వాతావరణ సలహా",
     climate_subtitle: "సరైన ఉష్ణోగ్రత మరియు ఆర్ద్రతను పోల్చి సలహా పొందండి.",
     enter_conditions: "1. వాతావరణ వివరాలను నమోదు చేయండి",
@@ -580,6 +677,17 @@ export const translations = {
     required_corrections: "🛠️ చేయవలసిన వాతావరణ మార్పులు",
     biological_impact: "🐛 పట్టుపురుగుల జీవసంబంధ ప్రభావం",
     sop_title: "💡 ప్రామాణిక నిబంధనలు (SOP)",
+
+    // Enhanced Microclimate Operations Dashboard Keys
+    climate_ops_badge: "పెంపకం నిర్వహణ ఇంజిన్",
+    climate_variance_title: "📊 ఉష్ణోగ్రత మరియు తేమ వ్యత్యాస విశ్లేషణ",
+    variance_optimal: "సరైన పరిధిలో ఉంది (0.0 వ్యత్యాసం)",
+    variance_high: "గరిష్ట పరిమితి కంటే ఎక్కువ",
+    variance_low: "కనిష్ట పరిమితి కంటే తక్కువ",
+    section_biological_vuln: "🔬 పెరుగుదల దశ జీవసంబంధ ప్రభావం & రోగాల ముప్పు",
+    section_room_interventions: "🛠️ గది వాతావరణ నిర్వహణ చర్యలు (SOP)",
+    section_monitoring_check: "📋 తదుపరి 24 గంటల పర్యవేక్షణ జాబితా",
+    btn_view_climate_history: "📜 వాతావరణ రికార్డులను చూడండి",
 
     silkworm_title: "పట్టుపురుగు వ్యాధి లక్షణాల పరీక్ష",
     silkworm_subtitle: "గ్రాసరీ, ఫ్లాచేరీ, మస్కార్డిన్ మరియు పెబ్రిన్ వ్యాధులను గుర్తించండి.",
@@ -702,6 +810,22 @@ export const translations = {
     invalid_image_tip_2: "दस्तावेजों या अन्य वस्तुओं की फोटो न डालें।",
     invalid_image_tip_3: "प्राकृतिक रोशनी में फोटो लें।",
 
+    // Structured Agricultural Leaf Advisory Sections
+    ai_leaf_assessment_badge: "AI पत्ती मूल्यांकन",
+    preliminary_assessment_notice: "AI-आधारित प्रारंभिक मूल्यांकन · यह प्रमाणित प्रयोगशाला निदान नहीं है",
+    advisory_concern_label: "सलाह जोखिम स्तर",
+    advisory_low_concern: "कम चिंता · स्वस्थ पत्तियां",
+    advisory_moderate_concern: "मध्यम चिंता · प्रारंभिक प्रबंधन आवश्यक",
+    advisory_requires_attention: "तत्काल ध्यान आवश्यक · त्वरित क्षेत्रीय कार्रवाई",
+    section_what_to_do_now: "⚡ अब क्या करें (तत्काल क्षेत्रीय कदम)",
+    section_management: "🌱 अनुशंसित फसल एवं खेत प्रबंधन",
+    section_what_to_avoid: "⚠️ क्या न करें (सुरक्षा सावधानियां)",
+    section_monitoring_plan: "🔍 फसल निगरानी योजना और पुनः जांच",
+    section_when_expert_help: "👨‍🌾 कृषि विशेषज्ञ की सलाह कब लें",
+    section_silkworm_safety_title: "🐛 रेशम कीट आहार सुरक्षा",
+    btn_view_history_log: "📜 स्कैन रिकॉर्ड देखें",
+    chemical_disclaimer_notice: "कृषि रसायनों का उपयोग स्थानीय रेशम विभाग के दिशा-निर्देशों के अनुसार ही करें। कीटों को पत्तियां खिलाने से पहले निर्धारित प्रतीक्षा समय का अनिवार्य रूप से पालन करें।",
+
     climate_title: "रेशम कीट पालन जलवायु सलाह",
     climate_subtitle: "सभी 6 विकास चरणों के लिए आदर्श तापमान और आर्द्रता की तुलना करें।",
     enter_conditions: "1. पालन वातावरण दर्ज करें",
@@ -721,6 +845,17 @@ export const translations = {
     required_corrections: "🛠️ आवश्यक पर्यावरणीय सुधार",
     biological_impact: "🐛 रेशम कीटों पर जैविक प्रभाव",
     sop_title: "💡 मानक संचालन प्रक्रियाएं (SOP)",
+
+    // Enhanced Microclimate Operations Dashboard Keys
+    climate_ops_badge: "कीट पालन संचालन इंजन",
+    climate_variance_title: "📊 तापमान और आर्द्रता विचलन विश्लेषण",
+    variance_optimal: "आदर्श सीमा के भीतर (0.0 विचलन)",
+    variance_high: "अनुशंसित अधिकतम सीमा से अधिक",
+    variance_low: "अनुशंसित न्यूनतम सीमा से कम",
+    section_biological_vuln: "🔬 विकास चरण जैविक संवेदनशीलता एवं रोगाणु जोखिम",
+    section_room_interventions: "🛠️ व्यावहारिक कक्ष प्रबंधन एवं सुधारात्मक कदम (SOP)",
+    section_monitoring_check: "📋 अगले 24 घंटों की निगरानी चेकलिस्ट",
+    btn_view_climate_history: "📜 जलवायु इतिहास देखें",
 
     silkworm_title: "रेशम कीट रोग लक्षण जांचकर्ता",
     silkworm_subtitle: "ग्रासरी, फ्लेचरी, मस्कार्डिन और पेब्रिन रोगों का निदान करें।",

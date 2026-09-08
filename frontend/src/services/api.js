@@ -154,4 +154,10 @@ export const getModelMetrics = async () => {
   return res.data;
 };
 
+// --- Health Check ---
+export const checkApiHealth = async () => {
+  const res = await api.get('/health', { timeout: 6000 });
+  return res.data;
+};
+
 export default api;

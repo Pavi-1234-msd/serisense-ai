@@ -164,151 +164,314 @@
 
 /* Status Banner */
 .status-banner {
-  padding: 18px 20px;
-  border-radius: 10px;
+  padding: 16px 20px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   gap: 16px;
   color: white;
-  margin-bottom: 18px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+}
+
+.status-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 
 .status-icon {
   font-size: 2.2rem;
+  line-height: 1;
 }
 
-.banner-subtitle {
-  font-size: 0.75rem;
-  letter-spacing: 0.8px;
-  opacity: 0.9;
-  display: block;
-}
-
-.banner-title {
+.status-title {
   font-size: 1.25rem;
-  margin-top: 2px;
+  font-weight: 700;
+  margin: 0 0 3px 0;
 }
 
-.status-safe { background: linear-gradient(135deg, #2e7d32, #1b5e20); }
-.status-warning { background: linear-gradient(135deg, #f57c00, #e65100); }
-.status-critical { background: linear-gradient(135deg, #d32f2f, #b71c1c); }
+.status-sub {
+  font-size: 0.85rem;
+  opacity: 0.95;
+  margin: 0;
+}
 
-/* Comparison Grid */
-.metric-comparison-grid {
+.status-safe { background: linear-gradient(135deg, #1b5e20, #2e7d32); }
+.status-warning { background: linear-gradient(135deg, #e65100, #f57c00); }
+.status-critical { background: linear-gradient(135deg, #b71c1c, #d32f2f); }
+
+/* Climate Operations Dashboard Cards */
+.climate-operations-report {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ops-card {
+  background: #ffffff;
+  border: 1px solid #e0e6ed;
+  border-radius: 10px;
+  padding: 16px 18px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+}
+
+.ops-card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid #f0f4f8;
+  padding-bottom: 8px;
+}
+
+.ops-card-header h4 {
+  margin: 0;
+  font-size: 0.96rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.ops-icon {
+  font-size: 1.1rem;
+}
+
+/* Variance Grid (Tier 1) */
+.variance-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
-  margin-bottom: 18px;
 }
 
-.metric-card {
-  background: #fafafa;
-  border: 1px solid #eee;
-  padding: 12px 14px;
+@media (max-width: 640px) {
+  .variance-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.variance-item {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
   border-radius: 8px;
+  padding: 12px 14px;
 }
 
-.metric-header {
+.variance-item.var-optimal {
+  border-left: 4px solid #16a34a;
+  background: #f0fdf4;
+}
+
+.variance-item.var-high {
+  border-left: 4px solid #ea580c;
+  background: #fff7ed;
+}
+
+.variance-item.var-low {
+  border-left: 4px solid #0284c7;
+  background: #f0f9ff;
+}
+
+.var-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 8px;
+}
+
+.var-title {
   font-size: 0.85rem;
-  color: #555;
+  font-weight: 600;
+  color: #475569;
+}
+
+.var-pill {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
+.pill-optimal {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.pill-high {
+  background: #ffedd5;
+  color: #c2410c;
+}
+
+.pill-low {
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+.var-metrics {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
   margin-bottom: 6px;
 }
 
-.metric-current {
-  font-size: 1.1rem;
-  font-weight: bold;
-  color: #222;
+.var-metrics .metric-current {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #0f172a;
 }
 
-.metric-target {
-  font-size: 0.8rem;
-  color: #666;
+.var-metrics .metric-target {
+  font-size: 0.78rem;
+  color: #64748b;
+  font-weight: 500;
 }
 
-/* Corrections Box */
-.correction-box {
-  background: #fdfbf7;
-  border: 1px solid #ffe8cc;
-  border-radius: 10px;
-  padding: 16px;
-  margin-bottom: 18px;
+.var-correction {
+  font-size: 0.82rem;
+  color: #334155;
+  margin: 6px 0 0 0;
+  line-height: 1.35;
+  font-style: italic;
 }
 
-.correction-title {
-  font-size: 0.95rem;
-  color: #e65100;
-  margin-bottom: 10px;
+/* Biological Pathology (Tier 2) */
+.section-pathology {
+  background: #fffbf5;
+  border-color: #fde68a;
 }
 
-.correction-item {
-  font-size: 0.88rem;
-  margin-bottom: 8px;
-  color: #333;
+.biological-intro {
+  font-size: 0.86rem;
+  line-height: 1.45;
+  color: #334155;
+  margin: 0 0 10px 0;
 }
 
-.correction-item strong {
+.pathogen-risk-box {
+  background: #fef3c7;
+  border-left: 4px solid #d97706;
+  border-radius: 6px;
+  padding: 10px 12px;
+}
+
+.risk-tag {
   display: block;
-  margin-bottom: 2px;
-  color: #555;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #92400e;
+  text-transform: uppercase;
+  margin-bottom: 3px;
 }
 
-.correction-item p {
+.risk-text {
+  font-size: 0.84rem;
   line-height: 1.4;
+  color: #78350f;
+  margin: 0;
 }
 
-/* Impact Advisory */
-.impact-advisory-block {
-  padding: 14px 16px;
-  border-radius: 8px;
-  border-left: 4px solid;
-  margin-bottom: 18px;
+/* Interventions / SOP (Tier 3) */
+.section-interventions {
+  border-color: #cbd5e1;
 }
 
-.impact-advisory-block.safe {
-  background: #e8f5e9;
-  border-color: #2e7d32;
-}
-
-.impact-advisory-block.danger {
-  background: #fff3e0;
-  border-color: #e65100;
-}
-
-.impact-title {
-  font-size: 0.92rem;
-  margin-bottom: 4px;
-}
-
-.impact-desc {
-  font-size: 0.88rem;
-  line-height: 1.4;
-}
-
-/* Actions */
-.action-recommendations {
-  background: #fafafa;
-  border: 1px solid #eee;
-  padding: 14px 16px;
-  border-radius: 8px;
-}
-
-.action-title {
-  font-size: 0.9rem;
-  color: #444;
-  margin-bottom: 8px;
-}
-
-.action-recommendations ul {
+.intervention-steps {
   list-style: none;
   padding: 0;
-  font-size: 0.85rem;
-  color: #555;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-.action-recommendations li {
-  margin-bottom: 6px;
+.intervention-step-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.86rem;
   line-height: 1.4;
+  color: #334155;
+}
+
+.step-badge {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #e2e8f0;
+  color: #1e293b;
+  font-weight: 700;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.step-desc {
+  padding-top: 1px;
+}
+
+/* Checklist (Tier 4) */
+.section-checklist {
+  border-color: #cbd5e1;
+}
+
+.checklist-items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.checklist-items li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.85rem;
+  line-height: 1.35;
+  color: #334155;
+}
+
+.check-box {
+  color: #16a34a;
+  font-size: 0.95rem;
+  line-height: 1;
+  padding-top: 2px;
+}
+
+/* Audit Trail & History Link (Tier 5) */
+.climate-history-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 12px 14px;
+  background: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  border-radius: 8px;
+}
+
+.history-status {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #15803d;
+}
+
+.btn-history-view {
+  background: #0284c7;
+  color: #ffffff;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.btn-history-view:hover {
+  background: #0369a1;
+  transform: translateY(-1px);
 }
