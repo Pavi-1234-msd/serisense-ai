@@ -265,7 +265,9 @@
   gap: 28px;
 }
 
-.footer-col h4 {
+.footer-col h4,
+.footer-col h3,
+.footer-col-title {
   color: #ffe082;
   font-size: 0.82rem;
   font-weight: 700;

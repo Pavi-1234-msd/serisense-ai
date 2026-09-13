@@ -261,7 +261,7 @@ export default function Home() {
                   <li key={j}><span className="mc-tick">✓</span>{f}</li>
                 ))}
               </ul>
-              <button className="mc-btn" style={{ background: m.color }}
+              <button className="mc-btn"
                 onClick={() => navigate(m.path)}>
                 {t('open_module')}
               </button>
@@ -281,7 +281,7 @@ export default function Home() {
             <div key={i} className="step-card">
               <div className="step-num">{s.num}</div>
               <div className="step-icon">{s.icon}</div>
-              <h4 className="step-title">{s.title}</h4>
+              <h3 className="step-title">{s.title}</h3>
               <p className="step-desc">{s.desc}</p>
             </div>
           ))}

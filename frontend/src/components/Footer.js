@@ -18,19 +18,19 @@ export default function Footer() {
 
                 <div className="footer-links">
                     <div className="footer-col">
-                        <h4>{t('footer_col_modules')}</h4>
+                        <h3 className="footer-col-title">{t('footer_col_modules')}</h3>
                         <Link to="/leaf-disease">{t('nav_leaf')}</Link>
                         <Link to="/climate">{t('nav_climate')}</Link>
                         <Link to="/silkworm">{t('nav_silkworm')}</Link>
                     </div>
                     <div className="footer-col">
-                        <h4>{t('footer_col_project')}</h4>
+                        <h3 className="footer-col-title">{t('footer_col_project')}</h3>
                         <span>Sri Krishna College of Technology</span>
                         <span>Dept. of Information Technology</span>
                         <span>Project Work Phase-I (23IT701)</span>
                     </div>
                     <div className="footer-col">
-                        <h4>{t('footer_col_team')}</h4>
+                        <h3 className="footer-col-title">{t('footer_col_team')}</h3>
                         <span>Nithishkumar D — 727823TUCS212</span>
                         <span>Pavithran K — 727823TUCS219</span>
                         <span>Oviya S — 727823TUCS215</span>

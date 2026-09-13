@@ -14,6 +14,7 @@ body {
 }
 
 :root {
+  /* Unified Brand & Semantic Palette (Issue 2) */
   --green-dark: #1b5e20;
   --green-mid: #2e7d32;
   --green-light: #4caf50;
@@ -23,13 +24,31 @@ body {
   --red: #c62828;
   --orange: #e65100;
   --white: #ffffff;
+
+  /* Standardized Text Colors - 4 Core Tiers (Issue 2) */
   --text-dark: #1a2e1a;
   --text-mid: #2d4a2d;
   --text-muted: #5a7a5a;
-  --shadow: 0 4px 20px rgba(0, 0, 0, 0.10);
-  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.14);
+  --text-light: #ffffff;
+
+  /* Standardized 7-Step Type Scale (Issue 1) */
+  --font-xs: 0.75rem;    /* 12px */
+  --font-sm: 0.875rem;   /* 14px */
+  --font-base: 1rem;     /* 16px */
+  --font-lg: 1.125rem;   /* 18px */
+  --font-xl: 1.25rem;    /* 20px */
+  --font-2xl: 1.5rem;    /* 24px */
+  --font-3xl: 1.9rem;    /* ~30px */
+
+  /* Standardized Corner Radii - 4 Clean Scales (Issue 3) */
+  --radius-sm: 6px;
+  --radius-md: 10px;
   --radius: 14px;
   --radius-lg: 20px;
+  --radius-full: 9999px;
+
+  --shadow: 0 4px 20px rgba(0, 0, 0, 0.10);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.14);
 }
 
 ::-webkit-scrollbar {
