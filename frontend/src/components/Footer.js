@@ -26,8 +26,8 @@ export default function Footer() {
                     <div className="footer-col">
                         <h3 className="footer-col-title">{t('footer_col_project')}</h3>
                         <span>Sri Krishna College of Technology</span>
-                        <span>Dept. of Information Technology</span>
-                        <span>Project Work Phase-I (23IT701)</span>
+                        <span>Dept of Computer Science and Engineering</span>
+                        <span>Project Work Phase-III (23CSE062)</span>
                     </div>
                     <div className="footer-col">
                         <h3 className="footer-col-title">{t('footer_col_team')}</h3>
