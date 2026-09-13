@@ -117,7 +117,7 @@ function Login() {
                 <div className="feature-item">
                   <span className="feature-icon">🌿</span>
                   <div>
-                    <h4>98.75% Accuracy</h4>
+                    <h4>90.3% Evaluation Benchmark</h4>
                     <p>Mulberry leaf disease classification powered by fine-tuned MobileNetV2 CNN</p>
                   </div>
                 </div>
@@ -143,8 +143,8 @@ function Login() {
 
           <div className="hero-footer-stat">
             <div className="stat-pill">
-              <span className="stat-num">98.75%</span>
-              <span className="stat-lbl">AI Model Accuracy</span>
+              <span className="stat-num">90.3%</span>
+              <span className="stat-lbl">Evaluation Accuracy</span>
             </div>
             <div className="stat-pill">
               <span className="stat-num">6 Stages</span>

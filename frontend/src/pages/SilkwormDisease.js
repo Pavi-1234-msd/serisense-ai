@@ -535,6 +535,9 @@ _Sri Krishna College of Technology_`;
                   `${t('btn_run_assessment') || '⚡ Run Health Assessment'} (${selectedSymptoms.length} Symptoms Selected)`
                 )}
               </button>
+              <p className="submit-supporting-text">
+                Analyze observed symptoms and rearing context using the SeriSense symptom-matching engine.
+              </p>
             </div>
           </form>
         </div>
@@ -544,30 +547,44 @@ _Sri Krishna College of Technology_`;
           {!activeDiagnosis && !loading && (
             <div className="empty-state">
               <div className="empty-icon">🩺</div>
-              <h3>Silkworm Assessment Engine Ready</h3>
-              <p>
-                Complete the context fields, select observed signs from the left panel, and run the assessment to receive a structured, explainable health evaluation.
-              </p>
+              <h3>Silkworm Health Assessment Ready</h3>
+              
+              {selectedSymptoms.length === 0 ? (
+                <div className="insufficient-data-panel">
+                  <span className="panel-badge">{t('insufficient_data_title') || 'INSUFFICIENT OBSERVATION DATA'}</span>
+                  <p className="insufficient-text">
+                    {t('insufficient_data_desc') || 'Select observed symptoms from the left panel and provide rearing context to run the assessment.'}
+                  </p>
+                </div>
+              ) : (
+                <p>
+                  {selectedSymptoms.length} symptom(s) selected. Click <strong>Run Health Assessment</strong> to analyze rearing patterns.
+                </p>
+              )}
 
               {/* Historical Intelligence Preview if Available */}
               {historyLoading ? (
                 <div className="recent-assessments-box">
                   <p style={{ margin: 0, fontSize: '0.8rem', color: '#64748b' }}>⏳ Loading farm assessment history...</p>
                 </div>
-              ) : recentAssessments.length > 0 && (
+              ) : recentAssessments.length > 0 ? (
                 <div className="recent-assessments-box">
-                  <h4>{t('recent_assessments_title') || 'Recent Farm Assessments on Record'}</h4>
+                  <h4>{t('recent_assessments_title') || 'Previous Assessments'}</h4>
                   <ul className="recent-list">
                     {recentAssessments.map((item, idx) => (
                       <li key={idx} className="recent-item">
-                        <span className="recent-disease">{item.predictedDisease || 'General Check'}</span>
-                        <span className="recent-pct">{item.matchPercentage || 0}% match</span>
+                        <span className="recent-disease">{item.predictedDisease || 'General Check'} pattern</span>
+                        <span className="recent-pct">{item.matchPercentage || 0}% symptom match</span>
                         <span className="recent-date">
                           {item.createdAtIso ? new Date(item.createdAtIso).toLocaleDateString() : 'Previous'}
                         </span>
                       </li>
                     ))}
                   </ul>
+                </div>
+              ) : (
+                <div className="recent-assessments-box">
+                  <p style={{ margin: 0, fontSize: '0.82rem', color: '#64748b' }}>No previous assessments recorded.</p>
                 </div>
               )}
             </div>
@@ -576,8 +593,13 @@ _Sri Krishna College of Technology_`;
           {loading && (
             <div className="loading-state">
               <div className="loading-spinner purple-spin"></div>
-              <h3>Analyzing Observed Signs...</h3>
-              <p className="loading-sub">Matching symptom vectors against Central Silk Board pathological profiles...</p>
+              <h3>Running Health Assessment...</h3>
+              <ul className="loading-steps-list">
+                <li>1. Validating observations</li>
+                <li>2. Matching symptom patterns</li>
+                <li>3. Preparing preliminary assessment</li>
+                <li>4. Saving assessment history</li>
+              </ul>
             </div>
           )}
 
@@ -590,9 +612,15 @@ _Sri Krishna College of Technology_`;
                   <h2 className="banner-name">{activeDiagnosis.disease}</h2>
                   <span className="banner-category">Pathogen Classification: {activeDiagnosis.category}</span>
                 </div>
-                <div className="match-pill">
-                  <span className="match-num">{activeDiagnosis.match_percentage}%</span>
-                  <span className="match-lbl">Pattern Match</span>
+                <div className="match-pill-group">
+                  <div className="match-pill">
+                    <span className="match-num">{activeDiagnosis.match_percentage}%</span>
+                    <span className="match-lbl">Symptom Match</span>
+                  </div>
+                  <div className="match-pill indicators-pill">
+                    <span className="match-num">{activeDiagnosis.matched_count} / {activeDiagnosis.total_symptoms}</span>
+                    <span className="match-lbl">Matched Indicators</span>
+                  </div>
                 </div>
               </div>
 
@@ -601,7 +629,51 @@ _Sri Krishna College of Technology_`;
                 ℹ️ <strong>Decision-Support Notice:</strong> {t('disclaimer_preliminary') || 'This report provides preliminary decision support based on observed signs. It does not replace microscopic or laboratory confirmation.'}
               </div>
 
-              {/* Explainability Section: Why This Assessment? */}
+              {/* Section 9: Observation Summary Card */}
+              <div className="report-card observation-summary-card">
+                <div className="card-header">
+                  <span className="card-icon">📋</span>
+                  <h4>{t('obs_summary_title') || 'Observation Summary'}</h4>
+                </div>
+                <div className="summary-two-col">
+                  <div className="summary-block">
+                    <span className="summary-block-title">Rearing Context</span>
+                    <div className="summary-data-grid">
+                      <div className="summary-data-item"><span className="lbl">Stage:</span> <span className="val">{activeDiagnosis.context?.stage || rearingStage || 'Not specified'}</span></div>
+                      {activeDiagnosis.context?.rearing_bed && (
+                        <div className="summary-data-item"><span className="lbl">Bed / Batch:</span> <span className="val">{activeDiagnosis.context.rearing_bed}</span></div>
+                      )}
+                      <div className="summary-data-item"><span className="lbl">Severity:</span> <span className="val">{activeDiagnosis.context?.observed_severity || observedSeverity}</span></div>
+                      <div className="summary-data-item"><span className="lbl">Onset:</span> <span className="val">{activeDiagnosis.context?.onset_timeline || onsetTimeline}</span></div>
+                      <div className="summary-data-item"><span className="lbl">Affected:</span> <span className="val">{activeDiagnosis.context?.affected_ratio || affectedRatio}</span></div>
+                      <div className="summary-data-item"><span className="lbl">Feeding:</span> <span className="val">{activeDiagnosis.context?.feeding_behavior || feedingBehavior}</span></div>
+                      <div className="summary-data-item"><span className="lbl">Activity:</span> <span className="val">{activeDiagnosis.context?.larval_activity || larvalActivity}</span></div>
+                    </div>
+                  </div>
+
+                  {(activeDiagnosis.context?.temperature != null || activeDiagnosis.context?.humidity != null || activeDiagnosis.context?.bed_condition || activeDiagnosis.context?.ventilation) && (
+                    <div className="summary-block">
+                      <span className="summary-block-title">Environmental Context (Optional)</span>
+                      <div className="summary-data-grid">
+                        {activeDiagnosis.context.temperature != null && (
+                          <div className="summary-data-item"><span className="lbl">Temperature:</span> <span className="val">{activeDiagnosis.context.temperature}°C</span></div>
+                        )}
+                        {activeDiagnosis.context.humidity != null && (
+                          <div className="summary-data-item"><span className="lbl">Humidity:</span> <span className="val">{activeDiagnosis.context.humidity}%</span></div>
+                        )}
+                        {activeDiagnosis.context.bed_condition && (
+                          <div className="summary-data-item"><span className="lbl">Bed Condition:</span> <span className="val">{activeDiagnosis.context.bed_condition}</span></div>
+                        )}
+                        {activeDiagnosis.context.ventilation && (
+                          <div className="summary-data-item"><span className="lbl">Ventilation:</span> <span className="val">{activeDiagnosis.context.ventilation}</span></div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Section 7: Explainability: Why This Assessment? */}
               <div className="report-card explainability-card">
                 <div className="card-header">
                   <span className="card-icon">🔍</span>
@@ -628,11 +700,11 @@ _Sri Krishna College of Technology_`;
 
                 {activeDiagnosis.unmatched_symptoms && activeDiagnosis.unmatched_symptoms.length > 0 && (
                   <div className="symptom-match-list unmatched">
-                    <span className="match-sub-title">✕ {t('unmatched_symptoms_title') || 'Key Disease Signs Not Observed'}:</span>
+                    <span className="match-sub-title">○ {t('unmatched_symptoms_title') || 'Other Key Pathogen Indicators Not Observed'}:</span>
                     <ul>
-                      {activeDiagnosis.unmatched_symptoms.slice(0, 4).map((sId, idx) => (
+                      {activeDiagnosis.unmatched_symptoms.map((sId, idx) => (
                         <li key={idx} className="match-item unmatched">
-                          <span className="icon">✕</span>
+                          <span className="icon">○</span>
                           <span>{getSymptomLabel(sId)}</span>
                         </li>
                       ))}
@@ -641,19 +713,19 @@ _Sri Krishna College of Technology_`;
                 )}
               </div>
 
-              {/* Differential Pattern Ranking */}
+              {/* Section 8: Differential Pattern Ranking */}
               {activeDiagnosis.all_matches && activeDiagnosis.all_matches.length > 1 && (
                 <div className="report-card differential-card">
                   <div className="card-header">
                     <span className="card-icon">📊</span>
-                    <h4>{t('alternative_patterns_title') || 'Differential Pattern Ranking'}</h4>
+                    <h4>{t('alternative_patterns_title') || 'Relative Symptom Match Ranking'}</h4>
                   </div>
                   <div className="differential-list">
                     {activeDiagnosis.all_matches.map((match, idx) => (
                       <div key={idx} className="differential-item">
                         <div className="diff-header">
                           <span className="diff-name">{idx + 1}. {match.name}</span>
-                          <span className="diff-pct">{match.match_percentage}% Match</span>
+                          <span className="diff-pct">{match.match_percentage}% Symptom Match</span>
                         </div>
                         <div className="diff-bar-wrap">
                           <div 
@@ -667,12 +739,12 @@ _Sri Krishna College of Technology_`;
                 </div>
               )}
 
-              {/* Immediate Farm Actions & Sanitization Protocol */}
+              {/* Section 10: Immediate Farm Actions */}
               {activeDiagnosis.treatment && (
                 <div className="report-card action-card">
                   <div className="card-header">
                     <span className="card-icon">🛠️</span>
-                    <h4>Recommended Immediate Actions</h4>
+                    <h4>{t('immediate_actions_title') || 'Recommended Immediate Actions'}</h4>
                   </div>
                   <p className="action-text">{activeDiagnosis.treatment}</p>
                 </div>
@@ -696,19 +768,45 @@ _Sri Krishna College of Technology_`;
                 </div>
               )}
 
-              {/* Farm Risk Intelligence Card (Connected to /api/risk/current) */}
+              {/* Section 11: 24-Hour Monitoring Checklist */}
+              <div className="report-card monitoring-card">
+                <div className="card-header">
+                  <span className="card-icon">📋</span>
+                  <h4>{t('monitoring_checklist_title') || 'Next 24 Hours — Monitoring Checklist'}</h4>
+                </div>
+                <ul className="monitoring-checklist">
+                  <li><span className="box-bullet">□</span> <span>Recheck affected rearing trays at next scheduled feeding window.</span></li>
+                  <li><span className="box-bullet">□</span> <span>Monitor whether feeding activity improves or additional worms exhibit sluggishness.</span></li>
+                  <li><span className="box-bullet">□</span> <span>Inspect adjacent rearing beds to ensure no cross-tray spread has occurred.</span></li>
+                  <li><span className="box-bullet">□</span> <span>Maintain recommended room temperature and ensure continuous air circulation.</span></li>
+                  <li><span className="box-bullet">□</span> <span>Re-run SeriSense health assessment if physical symptoms intensify or change.</span></li>
+                </ul>
+              </div>
+
+              {/* Section 12: Expert Escalation Panel */}
+              <div className="report-card escalation-card">
+                <div className="card-header">
+                  <span className="card-icon">👨‍🔬</span>
+                  <h4>{t('escalation_title') || 'Field Verification Recommended'}</h4>
+                </div>
+                <p className="escalation-text">
+                  {t('escalation_desc') || 'This assessment is based on observed symptoms and application rules. For confirmation of suspected disease, consult a qualified sericulture extension officer or appropriate laboratory service.'}
+                </p>
+              </div>
+
+              {/* Section 13: Farm Risk Context Card (Connected to /api/risk/current) */}
               {farmRisk && farmRisk.status === 'EVALUATED' && (
                 <div className="report-card risk-context-card">
                   <div className="card-header">
                     <span className="card-icon">🌐</span>
-                    <h4>{t('farm_risk_context_title') || 'Integrated Farm Risk Context'}</h4>
+                    <h4>{t('farm_risk_context_title') || 'Farm Risk Context'}</h4>
                   </div>
                   <div className="risk-score-badge-row">
                     <span className={`risk-priority-tag tag-${farmRisk.risk_level.toLowerCase()}`}>
-                      Management Priority: {farmRisk.risk_level}
+                      Risk Level: {farmRisk.risk_level}
                     </span>
                     <span className="risk-index-num">
-                      Decision-Support Priority Index: {farmRisk.risk_score} / 100
+                      Decision-Support Priority Index: {farmRisk.risk_score} / 100 <em className="not-prob-label">(Not a probability)</em>
                     </span>
                   </div>
                   <p className="risk-explanation-text">{farmRisk.explanation}</p>

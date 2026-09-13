@@ -40,16 +40,16 @@ function Navbar() {
   }, []);
 
   const links = [
-    { path: '/dashboard', label: '📊 Dashboard' },
+    { path: '/dashboard', label: `📊 ${t('nav_dashboard') || 'Dashboard'}` },
     { path: '/leaf-disease', label: t('nav_leaf') || '🌿 Leaf Disease' },
     { path: '/climate', label: t('nav_climate') || '🌡️ Climate' },
     { path: '/silkworm', label: t('nav_silkworm') || '🐛 Silkworm' },
-    { path: '/history', label: '📜 History' },
-    { path: '/profile', label: '👤 Profile' },
+    { path: '/history', label: `📜 ${t('nav_history') || 'History'}` },
+    { path: '/profile', label: `👤 ${t('nav_profile') || 'Profile'}` },
   ];
 
   if (user && user.role === 'ADMIN') {
-    links.push({ path: '/admin', label: '🛡️ Admin' });
+    links.push({ path: '/admin', label: `🛡️ ${t('nav_admin') || 'Admin'}` });
   }
 
   const handleLogout = () => {

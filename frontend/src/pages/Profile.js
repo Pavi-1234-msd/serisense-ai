@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { useLanguage } from '../context/LanguageContext';
 import './Profile.css';
 
 function Profile() {
   const { user, updateProfile } = useAuth();
+  const { t, changeLanguage } = useLanguage();
 
   const [formData, setFormData] = useState({
     full_name: user?.full_name || '',
@@ -37,7 +39,11 @@ function Profile() {
   const [msg, setMsg] = useState({ type: '', text: '' });
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+    if (name === 'preferred_language') {
+      changeLanguage(value);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -62,8 +68,8 @@ function Profile() {
   return (
     <div className="profile-container">
       <div className="profile-header">
-        <h1>👨‍🌾 Farmer Account & Farm Profile</h1>
-        <p>Update your personal details, regional preferences, and farm information.</p>
+        <h1>👨‍🌾 {t('profile_page_title') || 'Farmer Account & Farm Profile'}</h1>
+        <p>{t('profile_page_sub') || 'Update your personal details, regional preferences, and farm information.'}</p>
       </div>
 
       <div className="profile-card">
@@ -75,9 +81,9 @@ function Profile() {
 
         <form onSubmit={handleSubmit} className="profile-form">
           <div className="form-section">
-            <h3>Personal Information</h3>
+            <h3>{t('personal_info_sec') || 'Personal Information'}</h3>
             <div className="form-group">
-              <label>Full Name</label>
+              <label>{t('full_name_lbl') || 'Full Name'}</label>
               <input
                 type="text"
                 name="full_name"
@@ -88,7 +94,7 @@ function Profile() {
             </div>
             <div className="form-row">
               <div className="form-group">
-                <label>Email Address</label>
+                <label>{t('email_address_lbl') || 'Email Address'}</label>
                 <input
                   type="email"
                   name="email"
@@ -98,7 +104,7 @@ function Profile() {
                 />
               </div>
               <div className="form-group">
-                <label>Phone Number</label>
+                <label>{t('phone_number_lbl') || 'Phone Number'}</label>
                 <input
                   type="tel"
                   name="phone"
@@ -111,9 +117,9 @@ function Profile() {
           </div>
 
           <div className="form-section">
-            <h3>Farm & Location Details</h3>
+            <h3>{t('farm_details_sec') || 'Farm & Location Details'}</h3>
             <div className="form-group">
-              <label>Farm Name</label>
+              <label>{t('farm_name_lbl') || 'Farm Name'}</label>
               <input
                 type="text"
                 name="farm_name"
@@ -124,7 +130,7 @@ function Profile() {
             </div>
             <div className="form-row">
               <div className="form-group">
-                <label>Village / Locality</label>
+                <label>{t('village_locality_lbl') || 'Village / Locality'}</label>
                 <input
                   type="text"
                   name="village"
@@ -133,7 +139,7 @@ function Profile() {
                 />
               </div>
               <div className="form-group">
-                <label>District</label>
+                <label>{t('district_lbl') || 'District'}</label>
                 <input
                   type="text"
                   name="district"
@@ -142,7 +148,7 @@ function Profile() {
                 />
               </div>
               <div className="form-group">
-                <label>State</label>
+                <label>{t('state_lbl') || 'State'}</label>
                 <input
                   type="text"
                   name="state"
@@ -154,10 +160,10 @@ function Profile() {
           </div>
 
           <div className="form-section">
-            <h3>Preferences & Security</h3>
+            <h3>{t('preferences_sec') || 'Preferences & Security'}</h3>
             <div className="form-row">
               <div className="form-group">
-                <label>Preferred Language</label>
+                <label>{t('pref_language_lbl') || 'Preferred Language'}</label>
                 <select
                   name="preferred_language"
                   value={formData.preferred_language}
@@ -171,7 +177,7 @@ function Profile() {
                 </select>
               </div>
               <div className="form-group">
-                <label>New Password (Optional)</label>
+                <label>{t('new_password_lbl') || 'New Password (Optional)'}</label>
                 <input
                   type="password"
                   name="password"
@@ -184,7 +190,7 @@ function Profile() {
           </div>
 
           <button type="submit" className="btn-save-profile" disabled={saving}>
-            {saving ? 'Saving to Database...' : '💾 Save Profile Updates'}
+            {saving ? 'Saving to Database...' : `💾 ${t('btn_save_profile_updates') || 'Save Profile Updates'}`}
           </button>
         </form>
       </div>

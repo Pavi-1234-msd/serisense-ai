@@ -1,6 +1,7 @@
 /**
- * Enhanced Image Validator for Mulberry Leaf Disease Detection
- * Detects non-leaf photos (human portraits, skin tones, charts, documents, artificial objects, and non-vegetation).
+ * SeriSense AI — Mulberry Leaf Image Validator
+ * Filters out non-leaf images (human portraits/skin, non-agricultural objects,
+ * documents, screenshots, and plain backgrounds) before AI model processing.
  */
 
 export const validateIsLeafImage = (imageFile) => {
@@ -11,10 +12,12 @@ export const validateIsLeafImage = (imageFile) => {
     }
 
     const reader = new FileReader();
-    reader.onerror = () => resolve({ isLeaf: true, reason: 'File read error, allowing model fallback' });
+    reader.onerror = () => resolve({ isLeaf: true, reason: 'File read error' });
+
     reader.onload = (e) => {
       const img = new Image();
       img.onerror = () => resolve({ isLeaf: true, reason: 'Image load error' });
+
       img.onload = () => {
         try {
           const canvas = document.createElement('canvas');
@@ -28,11 +31,11 @@ export const validateIsLeafImage = (imageFile) => {
           const data = imageData.data;
           const totalPixels = sampleSize * sampleSize;
 
-          let whiteOrGrayPixels = 0;
-          let humanSkinPixels = 0;
-          let blueSkyOrShirtPixels = 0;
-          let leafVegetationPixels = 0; // True plant chlorophyll green, rust brown, or diseased yellow-brown
-          let totalSaturation = 0;
+          let whiteOrGrayPixels  = 0;
+          let blackPixels        = 0;
+          let skinPixels         = 0;
+          let artificialPixels   = 0; // Blue, purple, cyan, vibrant magenta (non-foliar)
+          let validLeafPixels    = 0;
 
           for (let i = 0; i < data.length; i += 4) {
             const r = data[i];
@@ -42,118 +45,158 @@ export const validateIsLeafImage = (imageFile) => {
             const maxRGB = Math.max(r, g, b);
             const minRGB = Math.min(r, g, b);
             const chroma = maxRGB - minRGB;
-            const saturation = maxRGB === 0 ? 0 : chroma / maxRGB;
-            totalSaturation += saturation;
 
-            // 1. Check for Document / Chart / White / Gray background
-            if (r > 200 && g > 200 && b > 200) {
+            // 1. Pure white / document / screenshot pixels
+            if (r > 220 && g > 220 && b > 220) {
               whiteOrGrayPixels++;
-            } else if (chroma < 18 && (r > 100 || g > 100 || b > 100)) {
-              whiteOrGrayPixels++;
+              continue;
             }
 
-            // 2. Human Skin Tone Detection (Standard RGB Peer/Kovac Rule)
-            // Conditions: R > 95, G > 40, B > 20; Max - Min > 15; |R - G| > 15; R > G; R > B
+            // 2. Near-gray pixels (paper, wall, card surface)
+            if (chroma < 12 && r > 130 && g > 130 && b > 130) {
+              whiteOrGrayPixels++;
+              continue;
+            }
+
+            // 3. Near-black pixels (dark background / shadow)
+            if (r < 25 && g < 25 && b < 25) {
+              blackPixels++;
+              continue;
+            }
+
+            // 4. Non-foliar unnatural colors (Blue sky, clothing, cars, electronic screens)
+            // Leaves never have strong blue or pure purple tones
+            if ((b > r * 1.15 && b > g * 1.15 && b > 60) || (b > 130 && chroma > 40 && b > g)) {
+              artificialPixels++;
+              continue;
+            }
+
+            // 5. Human Skin Tone Detection (Standard RGB skin color heuristic)
+            // Skin characteristics: R > 85, G > 40, B > 20, R > G > B, and (R - G) distinct
             const isSkin = (
-              r > 80 && g > 40 && b > 20 &&
-              chroma > 15 &&
-              Math.abs(r - g) > 12 &&
-              r > g && g > b
-            );
-            if (isSkin) {
-              humanSkinPixels++;
-            }
-
-            // 3. Artificial Blue / Background Sky / Clothing
-            if (b > 110 && b > r * 1.25 && b > g * 1.15) {
-              blueSkyOrShirtPixels++;
-            }
-
-            // 4. True Foliar / Mulberry Leaf Colors:
-            // - Active Chlorophyll Green: (g > r and g > b) with healthy leaf saturation
-            const isGreenLeaf = (g > r * 1.02) && (g > b * 1.15) && (g > 40);
-            
-            // - Leaf Rust (Cerotelium fici): Golden-yellowish / brownish pustules with green context
-            // Leaves have high green or olive presence, unlike skin which is red-dominated over green
-            const isLeafRustPustule = (
-              r > 90 && g > 75 && b < 70 &&
-              Math.abs(r - g) < 45 && // Yellow-brown hues (R and G close together)
-              (g > b * 1.3)
+              r > 85 && g > 40 && b > 20 &&
+              r > g && g > b &&
+              (r - g) > 12 && (r - g) < 85 &&
+              (r - b) > 20
             );
 
-            // - Necrotic Leaf Spot (Cercospora moricola): Dark brownish/black spots surrounded by green/pale halo
-            const isLeafNecrosis = (
-              r < 90 && g < 85 && b < 70 &&
-              chroma < 30 &&
-              (g >= b * 0.9)
+            // 6. Foliar / Mulberry Leaf Colors:
+            // Healthy Green
+            const isGreen = (g > r * 1.02) && (g > b * 1.15) && (g > 35);
+
+            // Leaf Rust: orange/reddish-brown rust pustules (must have sufficient rust chroma, not smooth skin)
+            const isRust = (
+              r > 75 && r > b * 1.4 &&
+              g > 40 && g < r * 0.92 &&
+              b < 80 &&
+              (r - b) > 40
             );
 
-            if (isGreenLeaf || isLeafRustPustule || isLeafNecrosis) {
-              leafVegetationPixels++;
+            // Leaf Spot: dark brown necrotic spots
+            const isDarkSpot = (
+              r > 20 && r < 110 &&
+              g > 15 && g < 90 &&
+              b < 70 &&
+              chroma > 8 &&
+              Math.abs(r - g) < 40
+            );
+
+            // Yellow-green diseased or senescent leaf
+            const isYellowGreen = (
+              r > 75 && g > 85 && b < 100 &&
+              g >= r * 0.88 &&
+              chroma > 15
+            );
+
+            // Olive / deep green
+            const isOlive = (
+              r > 25 && r < 120 &&
+              g > 35 && g < 140 &&
+              b < 95 &&
+              g >= r * 0.75
+            );
+
+            if (isSkin && !isGreen) {
+              skinPixels++;
+            } else if (isGreen || isRust || isDarkSpot || isYellowGreen || isOlive) {
+              validLeafPixels++;
             }
           }
 
-          const whiteGrayRatio = whiteOrGrayPixels / totalPixels;
-          const skinRatio = humanSkinPixels / totalPixels;
-          const blueRatio = blueSkyOrShirtPixels / totalPixels;
-          const vegetationRatio = leafVegetationPixels / totalPixels;
+          const whiteGrayRatio  = whiteOrGrayPixels / totalPixels;
+          const blackRatio      = blackPixels / totalPixels;
+          const skinRatio       = skinPixels / totalPixels;
+          const artificialRatio = artificialPixels / totalPixels;
+          const validLeafRatio  = validLeafPixels / totalPixels;
 
-          // STRICT LEAF VALIDATION RULES
-          // 1. Check if the image contains dominant plant foliar colors
-          // A genuine mulberry leaf (healthy or diseased) is dominated by plant pigments (chlorophyll green, foliar rust brown, or diseased necrotic halos)
-          
-          // ID Card / White Document / Grey Wall background
-          if (whiteGrayRatio > 0.40) {
+          // ── REJECTION CHECKS ──────────────────────────────────────────
+
+          // Check 1: Human portrait / face / selfie detected
+          if (skinRatio > 0.18 && validLeafRatio < 0.25) {
             resolve({
               isLeaf: false,
-              reason: 'Background contains paper, card, text, or wall surface. Please upload a close-up photo of a mulberry leaf.',
-              confidenceScore: Math.round((1 - whiteGrayRatio) * 100)
+              reason: 'Human portrait or person photo detected. Please upload clear photos of mulberry leaves.',
+              confidenceScore: Math.round(validLeafRatio * 100)
             });
             return;
           }
 
-          // Human face / skin tone check (even small faces or ID cards have skin pixels > 5%)
-          if (skinRatio > 0.06) {
+          // Check 2: Unnatural / non-plant colors dominant (blue sky, clothes, tech gadgets)
+          if (artificialRatio > 0.25 && validLeafRatio < 0.20) {
             resolve({
               isLeaf: false,
-              reason: 'Human subject or portrait detected. Please upload a photo of a mulberry leaf only.',
-              confidenceScore: Math.round(skinRatio * 100)
+              reason: 'Non-plant image detected (clothing, sky, or artificial object). Please upload mulberry leaves.',
+              confidenceScore: Math.round(validLeafRatio * 100)
             });
             return;
           }
 
-          // Non-agricultural blue / dark clothing check
-          if (blueRatio > 0.15) {
+          // Check 3: Mostly white / document / screenshot / card
+          if (whiteGrayRatio > 0.65) {
             resolve({
               isLeaf: false,
-              reason: 'Non-agricultural clothing or artificial background detected. Please upload a mulberry leaf photo.',
-              confidenceScore: Math.round(blueRatio * 100)
+              reason: 'Image appears to be a document, screenshot, or plain background. Please upload a close-up photo of a mulberry leaf.',
+              confidenceScore: Math.round(validLeafRatio * 100)
             });
             return;
           }
 
-          // Strict foliar threshold: Genuine mulberry leaf photo must have at least 25% plant foliage pixels
-          if (vegetationRatio < 0.25) {
+          // Check 4: Extremely dark / covered lens
+          if (blackRatio > 0.80) {
             resolve({
               isLeaf: false,
-              reason: 'No clear mulberry leaf foliage detected in this photo. Please ensure the leaf fills the camera frame.',
-              confidenceScore: Math.round(vegetationRatio * 100)
+              reason: 'Image is too dark. Please take a photo of mulberry leaves in good lighting.',
+              confidenceScore: 5
             });
             return;
           }
 
-          // Passed all checks - valid leaf photo
+          // Check 5: General lack of mulberry foliar features
+          if (validLeafRatio < 0.12) {
+            resolve({
+              isLeaf: false,
+              reason: 'No mulberry leaf features detected in the image. Please upload a clear photo of mulberry leaves.',
+              confidenceScore: Math.round(validLeafRatio * 100)
+            });
+            return;
+          }
+
+          // ── Accepted: Passes foliar check, ready for MobileNetV2 model ──
           resolve({
             isLeaf: true,
-            reason: 'Leaf features verified successfully',
-            confidenceScore: Math.round(vegetationRatio * 100)
+            reason: 'Valid leaf image accepted for AI classification',
+            confidenceScore: Math.round(validLeafRatio * 100)
           });
+
         } catch (err) {
-          resolve({ isLeaf: true, reason: 'Validation fallback' });
+          // Fallback if canvas extraction encounters an issue
+          resolve({ isLeaf: true, reason: 'Validation error — model fallback' });
         }
       };
+
       img.src = e.target.result;
     };
+
     reader.readAsDataURL(imageFile);
   });
 };

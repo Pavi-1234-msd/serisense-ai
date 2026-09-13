@@ -111,4 +111,3 @@ def get_silkworm_history():
         }), 200
     except Exception as e:
         return jsonify({'success': False, 'message': str(e)}), 500
-

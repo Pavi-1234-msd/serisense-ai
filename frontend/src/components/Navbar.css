@@ -62,22 +62,22 @@
 .navbar-nav-links {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
   flex-wrap: nowrap;
 }
 
 .nav-link {
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(255, 255, 255, 0.92);
   text-decoration: none;
-  padding: 6px 10px;
-  border-radius: 8px;
-  font-size: 0.82rem;
+  padding: 5px 7px;
+  border-radius: 7px;
+  font-size: 0.78rem;
   font-weight: 600;
   white-space: nowrap;
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 3px;
 }
 
 .nav-link:hover {
@@ -96,7 +96,7 @@
 .navbar-actions {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 6px;
   flex-shrink: 0;
   margin-left: auto;
 }
@@ -105,20 +105,20 @@
 .user-profile-badge {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 5px;
   background: rgba(255, 255, 255, 0.14);
   border: 1px solid rgba(255, 255, 255, 0.25);
-  padding: 4px 10px;
-  border-radius: 20px;
+  padding: 3px 7px;
+  border-radius: 18px;
   white-space: nowrap;
   flex-shrink: 0;
 }
 
 .farmer-badge-info {
   color: #ffffff;
-  font-size: 0.8rem;
+  font-size: 0.76rem;
   font-weight: 700;
-  max-width: 110px;
+  max-width: 105px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -251,28 +251,28 @@
 }
 
 /* Medium Desktop (Compact font / spacing before hamburger) */
-@media (max-width: 1280px) {
+@media (max-width: 1380px) {
   .navbar-container {
-    padding: 0 14px;
-    gap: 8px;
+    padding: 0 10px;
+    gap: 5px;
   }
   .navbar-brand {
-    font-size: 1.18rem;
+    font-size: 1.12rem;
   }
   .nav-link {
-    padding: 5px 7px;
-    font-size: 0.78rem;
+    padding: 4px 6px;
+    font-size: 0.75rem;
   }
   .navbar-actions {
-    gap: 6px;
+    gap: 5px;
   }
   .farmer-badge-info {
-    max-width: 85px;
+    max-width: 90px;
   }
 }
 
 /* Mobile & Tablet Responsive Dropdown Menu */
-@media (max-width: 1060px) {
+@media (max-width: 1180px) {
   .mobile-menu-toggle {
     display: block;
   }

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { predictLeafDisease } from '../services/api';
+import { predictLeafDisease, getCurrentRisk } from '../services/api';
 import { useLanguage } from '../context/LanguageContext';
-import { getLeafDiseaseAdvisory, getConfidenceAssessment } from '../services/leafAdvisories';
+import { getLeafDiseaseAdvisory, getConfidenceAssessment, LEAF_DISEASE_ADVISORIES } from '../services/leafAdvisories';
 import { validateIsLeafImage } from '../utils/imageValidator';
 import './LeafDisease.css';
 
@@ -16,6 +16,7 @@ function LeafDisease() {
   const [error, setError] = useState(null);
   const [dragActive, setDragActive] = useState(false);
   const [invalidImageInfo, setInvalidImageInfo] = useState(null);
+  const [farmRisk, setFarmRisk] = useState({ data: null, loading: false, error: null, authError: false });
 
   // Handle File Selection with Immediate Foliar Validation
   const handleFileChange = async (file) => {
@@ -132,11 +133,38 @@ function LeafDisease() {
           probabilities: res.data.predictions,
           backendReport: res.data.report || {}
         });
+
+        // Non-blocking query to authenticated GET /api/risk/current for broader farm context
+        setFarmRisk({ data: null, loading: true, error: null, authError: false });
+        getCurrentRisk()
+          .then((riskData) => {
+            if (riskData && riskData.success) {
+              setFarmRisk({ data: riskData, loading: false, error: null, authError: false });
+            } else {
+              setFarmRisk({ data: null, loading: false, error: riskData?.message || 'Unavailable', authError: false });
+            }
+          })
+          .catch((riskErr) => {
+            const isAuth = riskErr.response?.status === 401 || riskErr.response?.status === 403;
+            setFarmRisk({ 
+              data: null, 
+              loading: false, 
+              error: riskErr.message || 'Error', 
+              authError: isAuth 
+            });
+          });
       } else {
         setError(res.message || 'Failed to classify leaf image.');
       }
     } catch (err) {
-      setError(err.response?.data?.message || err.message || 'Failed to analyze leaf image. Please verify backend API connectivity.');
+      if (err.response?.data?.is_invalid) {
+        setInvalidImageInfo({
+          isLeaf: false,
+          reason: err.response.data.message || 'Non-mulberry leaf image detected. Please upload a clear photo of a mulberry leaf.'
+        });
+      } else {
+        setError(err.response?.data?.message || err.message || 'Failed to analyze leaf image. Please verify backend API connectivity.');
+      }
     } finally {
       setLoading(false);
     }
@@ -166,7 +194,7 @@ function LeafDisease() {
     }
   };
 
-  // WhatsApp Share Function for Mulberry Leaf Diagnosis
+  // WhatsApp Share Function for Mulberry Leaf Assessment
   const handleWhatsAppShare = () => {
     if (!result || !advisory) return;
 
@@ -177,7 +205,7 @@ function LeafDisease() {
       : (advisory.management?.[0] || 'Observe sanitary field measures');
 
     const message =
-`🌿 *SeriSense AI — Mulberry Leaf Diagnosis Report*
+`🌿 *SeriSense AI — Mulberry Leaf Assessment Report*
 ━━━━━━━━━━━━━━━━━━━━━━
 📋 *Assessment:* ${advisory.title || result.class}
 📊 *Confidence:* ${result.confidence}%
@@ -335,7 +363,7 @@ _Sri Krishna College of Technology_`;
               <h3 className="invalid-title">{t('invalid_image_title') || 'Not a Mulberry Leaf / Invalid Image'}</h3>
               <p className="invalid-desc">{invalidImageInfo.reason || (t('invalid_image_desc') || 'The uploaded photo does not appear to contain a clear mulberry leaf.')}</p>
               <div className="invalid-tips">
-                <h4>{t('invalid_image_tips_header') || '💡 Tips for Accurate AI Diagnosis:'}</h4>
+                <h4>{t('invalid_image_tips_header') || '💡 Tips for Accurate AI Assessment:'}</h4>
                 <ul>
                   <li>✓ {t('invalid_image_tip_1') || 'Ensure the photo shows a clear, close-up mulberry leaf.'}</li>
                   <li>✓ {t('invalid_image_tip_2') || 'Avoid uploading screenshots, charts, documents, or unrelated objects.'}</li>
@@ -418,6 +446,57 @@ _Sri Krishna College of Technology_`;
                   <div className="alert-body">
                     <strong>{confidenceAssessment.label}</strong>
                     <p>{confidenceAssessment.lowAdvice}</p>
+                  </div>
+                </div>
+              )}
+
+              {/* Model Prediction Distribution (All 3 Classes from Backend) */}
+              {result.probabilities && Object.keys(result.probabilities).length > 0 && (
+                <div className="prediction-distribution-card">
+                  <div className="distribution-header">
+                    <span className="distribution-icon">📊</span>
+                    <div>
+                      <h4 className="distribution-title">
+                        {t('prediction_distribution_title') || 'Model Prediction Distribution'}
+                      </h4>
+                      <p className="distribution-subtitle">
+                        {t('prediction_distribution_subtitle') || 'Exact model output confidence across all three target leaf classes (not disease outbreak probability)'}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="distribution-list">
+                    {['Disease Free leaves', 'Leaf Rust', 'Leaf Spot'].map((clsKey) => {
+                      const rawPct = result.probabilities[clsKey];
+                      if (rawPct === undefined || rawPct === null) return null;
+                      const isTopClass = clsKey.toLowerCase().trim() === result.class?.toLowerCase().trim();
+                      const displayPct = typeof rawPct === 'number' ? rawPct.toFixed(2) : parseFloat(rawPct || 0).toFixed(2);
+                      const barWidth = Math.min(100, Math.max(0, parseFloat(displayPct)));
+                      const classAdvisory = LEAF_DISEASE_ADVISORIES[clsKey]?.[lang] || LEAF_DISEASE_ADVISORIES[clsKey]?.en;
+                      const classDisplayName = classAdvisory?.title || clsKey;
+
+                      return (
+                        <div key={clsKey} className={`distribution-row ${isTopClass ? 'is-top-prediction' : ''}`}>
+                          <div className="dist-row-label">
+                            <div className="dist-name-wrap">
+                              <span className="dist-name">{classDisplayName}</span>
+                              {isTopClass && (
+                                <span className="top-class-badge">
+                                  ★ {t('top_prediction_tag') || 'Top Assessed Class'}
+                                </span>
+                              )}
+                            </div>
+                            <span className="dist-pct-num">{displayPct}%</span>
+                          </div>
+                          <div className="dist-track">
+                            <div
+                              className={`dist-fill ${isTopClass ? 'dist-fill-top' : 'dist-fill-secondary'}`}
+                              style={{ width: `${barWidth}%` }}
+                            ></div>
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               )}
@@ -524,6 +603,95 @@ _Sri Krishna College of Technology_`;
                 </p>
               </div>
 
+              {/* Farm Risk Context Section (Connected to GET /api/risk/current) */}
+              <div className="leaf-farm-risk-container">
+                {farmRisk.loading && (
+                  <div className="farm-risk-loading-card">
+                    <span className="spinner-inline"></span>
+                    <p>{t('farm_risk_loading') || 'Loading farm risk context from Risk Engine...'}</p>
+                  </div>
+                )}
+
+                {farmRisk.error && !farmRisk.loading && (
+                  <div className="farm-risk-notice-card warning-notice">
+                    <span className="notice-icon">🌐</span>
+                    <div className="notice-text">
+                      <strong>{t('farm_risk_context_title') || 'Current Farm Risk Context'}</strong>
+                      <p>
+                        {farmRisk.authError
+                          ? (t('farm_risk_auth_notice') || 'Please sign in to view integrated farm risk context.')
+                          : (t('farm_risk_unavailable') || 'Farm risk context is temporarily unavailable. The leaf assessment result remains valid.')}
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                {farmRisk.data && !farmRisk.loading && farmRisk.data.status === 'INSUFFICIENT_DATA' && (
+                  <div className="farm-risk-notice-card insufficient-notice">
+                    <div className="notice-header">
+                      <span className="notice-icon">📋</span>
+                      <h4 className="notice-title">{t('farm_risk_context_title') || 'Current Farm Risk Context'}</h4>
+                    </div>
+                    <div className="notice-body">
+                      <p className="insufficient-heading">
+                        <strong>{t('insufficient_risk_title') || 'Insufficient farm data for an integrated risk assessment.'}</strong>
+                      </p>
+                      <p className="insufficient-detail">
+                        {farmRisk.data.explanation || (t('insufficient_risk_advice') || 'Complete a climate check or silkworm assessment to build broader farm context.')}
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                {farmRisk.data && !farmRisk.loading && farmRisk.data.status === 'EVALUATED' && (
+                  <div className="farm-risk-context-card">
+                    <div className="card-header">
+                      <span className="card-icon">🌐</span>
+                      <div>
+                        <h4 className="risk-card-heading">{t('farm_risk_context_title') || 'Current Farm Risk Context'}</h4>
+                        <p className="risk-card-sub">{t('farm_risk_context_subtitle') || 'Integrated sericulture decision-support context evaluated by Risk Engine'}</p>
+                      </div>
+                    </div>
+
+                    <div className="risk-metrics-row">
+                      <div className="risk-metric-box">
+                        <span className="metric-title">{t('risk_level_label') || 'Risk Level'}</span>
+                        <span className={`risk-level-badge level-${(farmRisk.data.risk_level || '').toLowerCase()}`}>
+                          {farmRisk.data.risk_level}
+                        </span>
+                      </div>
+                      <div className="risk-metric-box">
+                        <span className="metric-title">{t('priority_index_label') || 'Priority Index'}</span>
+                        <div className="metric-score-wrap">
+                          <span className="metric-score-value">{farmRisk.data.risk_score}</span>
+                          <span className="metric-score-denom">/ 100</span>
+                        </div>
+                        <span className="metric-not-prob">({t('risk_not_a_probability') || 'Decision-support priority index — not a probability'})</span>
+                      </div>
+                    </div>
+
+                    {farmRisk.data.explanation && (
+                      <p className="risk-explanation-text">{farmRisk.data.explanation}</p>
+                    )}
+
+                    {Array.isArray(farmRisk.data.factors) && farmRisk.data.factors.length > 0 && (
+                      <div className="risk-factors-wrap">
+                        <span className="factors-title">Contributing Farm Factors:</span>
+                        <ul className="risk-factors-list">
+                          {farmRisk.data.factors.map((factor, idx) => (
+                            <li key={idx}>• {factor}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+
+                    <div className="risk-context-disclaimer">
+                      {t('broader_context_disclaimer') || 'ℹ️ Farm risk context reflects recent ambient, foliar, and rearing records across your farm. It provides holistic decision support and does not alter this individual leaf model prediction.'}
+                    </div>
+                  </div>
+                )}
+              </div>
+
               {/* WhatsApp Share Button */}
               <div className="whatsapp-share-bar" style={{ margin: '14px 0 10px' }}>
                 <button
@@ -556,7 +724,7 @@ _Sri Krishna College of Technology_`;
                   }}
                 >
                   <span style={{ fontSize: '1.2rem' }}>📲</span>
-                  {t('btn_share_whatsapp') || 'Share Diagnosis Report on WhatsApp'}
+                  {t('btn_share_whatsapp') || 'Share Assessment Report on WhatsApp'}
                 </button>
               </div>
 

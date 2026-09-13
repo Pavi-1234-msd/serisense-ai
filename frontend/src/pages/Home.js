@@ -161,7 +161,7 @@ export default function Home() {
       icon: '🌿',
       title: t('nav_leaf'),
       desc: t('leaf_subtitle'),
-      features: [t('stat_accuracy') + ': 98.75%', t('chem_treatment'), t('silkworm_safety'), t('prevention_guidelines')],
+      features: [t('stat_accuracy') + ': 90.3%', t('chem_treatment'), t('silkworm_safety'), t('prevention_guidelines')],
       path: '/leaf-disease',
       color: '#2e7d32',
       bg: '#e8f5e9',
@@ -214,7 +214,7 @@ export default function Home() {
           </p>
           <div className="hero-stats-row">
             {[
-              { num: '98.75%', lbl: t('stat_accuracy') },
+              { num: '90.3%', lbl: t('stat_accuracy') },
               { num: '3', lbl: t('stat_leaf') },
               { num: '4', lbl: t('stat_silkworm') },
               { num: '6', lbl: t('stat_instar') },

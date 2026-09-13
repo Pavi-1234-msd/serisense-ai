@@ -57,7 +57,7 @@ function App() {
             <Routes>
               <Route path="/login" element={<Login />} />
               <Route path="/" element={<Home />} />
-              
+
               {/* Protected Farmer Routes */}
               <Route path="/dashboard" element={<RequireAuth><Dashboard /></RequireAuth>} />
               <Route path="/leaf-disease" element={<RequireAuth><LeafDisease /></RequireAuth>} />
@@ -65,7 +65,7 @@ function App() {
               <Route path="/silkworm" element={<RequireAuth><SilkwormDisease /></RequireAuth>} />
               <Route path="/history" element={<RequireAuth><History /></RequireAuth>} />
               <Route path="/profile" element={<RequireAuth><Profile /></RequireAuth>} />
-              
+
               {/* Admin Route */}
               <Route path="/admin" element={<RequireAdmin><Admin /></RequireAdmin>} />
             </Routes>

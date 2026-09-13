@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { useLanguage } from '../context/LanguageContext';
 import { getLeafHistory, getClimateHistory, getSilkwormHistory } from '../services/api';
 import './History.css';
 
 function History() {
+  const { t } = useLanguage();
   const [searchParams, setSearchParams] = useSearchParams();
   const initialTab = searchParams.get('tab') || 'leaf';
 
@@ -62,8 +64,8 @@ function History() {
   return (
     <div className="history-container">
       <div className="history-header">
-        <h1>📜 Activity & Prediction History</h1>
-        <p>All recorded scans, climate checks, and silkworm diagnoses saved in your Cloud Firestore account database.</p>
+        <h1>📜 {t('history_title') || 'Activity & Prediction History'}</h1>
+        <p>{t('history_sub') || 'All recorded scans, climate checks, and silkworm diagnoses saved in your Cloud Firestore account database.'}</p>
       </div>
 
       {/* Tabs & Search Header */}
@@ -73,26 +75,26 @@ function History() {
             className={`tab-btn ${activeTab === 'leaf' ? 'active' : ''}`}
             onClick={() => handleTabChange('leaf')}
           >
-            🌿 Leaf Scans ({leafHistory.length})
+            🌿 {t('tab_leaf_scans') || 'Leaf Scans'} ({leafHistory.length})
           </button>
           <button 
             className={`tab-btn ${activeTab === 'climate' ? 'active' : ''}`}
             onClick={() => handleTabChange('climate')}
           >
-            🌡️ Climate Checks ({climateHistory.length})
+            🌡️ {t('tab_climate_checks') || 'Climate Checks'} ({climateHistory.length})
           </button>
           <button 
             className={`tab-btn ${activeTab === 'silkworm' ? 'active' : ''}`}
             onClick={() => handleTabChange('silkworm')}
           >
-            🐛 Silkworm Diagnoses ({silkwormHistory.length})
+            🐛 {t('tab_silkworm_diagnoses') || 'Silkworm Diagnoses'} ({silkwormHistory.length})
           </button>
         </div>
 
         <div className="search-box">
           <input
             type="text"
-            placeholder="Search records..."
+            placeholder={t('search_records_ph') || 'Search records...'}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -101,7 +103,7 @@ function History() {
 
       {/* Content Area */}
       {loading ? (
-        <div className="loading-state">Loading history records from Firestore...</div>
+        <div className="loading-state">{t('loading_history') || 'Loading history records from Firestore...'}</div>
       ) : (
         <div className="tab-content">
           {/* Leaf Predictions Tab */}
@@ -114,12 +116,12 @@ function History() {
                   <div key={item.id || item.predictionId || idx} className="history-card">
                     <div className="card-top">
                       <span className="disease-badge">{item.disease}</span>
-                      <span className="confidence-badge">{item.confidence}% Match</span>
+                      <span className="confidence-badge">{item.confidence}% {t('match_pct') || 'Match'}</span>
                     </div>
                     <p className="record-date">📅 {formatDate(item.createdAt || item.created_at)}</p>
                     {item.report?.chemical && (
                       <div className="report-snippet">
-                        <p><strong>Treatment Guidance:</strong></p>
+                        <p><strong>{t('treatment_guidance_lbl') || 'Treatment Guidance'}:</strong></p>
                         <p>{item.report.chemical} — {item.report.dosage}</p>
                       </div>
                     )}
@@ -148,7 +150,7 @@ function History() {
                     </div>
                     {(item.temperature_correction || item.temp_correction) && (
                       <p className="action-step">
-                        <strong>Action:</strong> {item.temperature_correction || item.temp_correction}
+                        <strong>{t('action_label') || 'Action'}:</strong> {item.temperature_correction || item.temp_correction}
                       </p>
                     )}
                   </div>
@@ -171,10 +173,10 @@ function History() {
                     <div key={item.id || item.diagnosisId || idx} className="history-card">
                       <div className="card-top">
                         <span className="disease-badge">{diseaseName}</span>
-                        <span className="confidence-badge">{matchPct}% Match</span>
+                        <span className="confidence-badge">{matchPct}% {t('match_pct') || 'Match'}</span>
                       </div>
                       <p className="record-date">📅 {formatDate(item.createdAt || item.created_at)}</p>
-                      <p><strong>Symptoms Matched:</strong> {symCount}</p>
+                      <p><strong>{t('symptoms_matched_lbl') || 'Symptoms Matched'}:</strong> {symCount}</p>
                     </div>
                   );
                 })
