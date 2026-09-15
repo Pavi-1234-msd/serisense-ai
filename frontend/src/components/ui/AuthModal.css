@@ -324,3 +324,47 @@
   font-size: 0.78rem;
   color: #7f8c8d;
 }
+
+@media (max-width: 480px) {
+  .auth-modal-overlay {
+    padding: 10px;
+  }
+
+  .auth-modal-card {
+    border-radius: 14px;
+    max-height: 90vh;
+  }
+
+  .auth-modal-header {
+    padding: 1.2rem 1.1rem;
+  }
+
+  .auth-modal-body {
+    padding: 1.2rem 1.1rem;
+  }
+
+  .phone-input-wrapper {
+    flex-wrap: nowrap;
+  }
+
+  .country-prefix {
+    padding: 0.7rem 0.8rem;
+    font-size: 0.95rem;
+  }
+
+  .phone-input {
+    font-size: 1rem;
+    padding: 0.7rem 0.8rem;
+  }
+
+  .auth-btn-primary {
+    min-height: 46px;
+    font-size: 0.98rem;
+  }
+
+  .otp-digit-input {
+    width: 38px;
+    height: 46px;
+    font-size: 1.2rem;
+  }
+}

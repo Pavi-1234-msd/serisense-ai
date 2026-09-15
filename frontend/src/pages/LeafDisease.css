@@ -1292,4 +1292,70 @@
   .farm-risk-context-card {
     padding: 14px 16px;
   }
+
+  .chemical-table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+@media (max-width: 480px) {
+  .leaf-disease-container {
+    padding: 14px 10px;
+  }
+
+  .upload-card, .result-card {
+    padding: 16px 12px;
+    border-radius: 12px;
+  }
+
+  .sample-buttons {
+    gap: 6px;
+  }
+
+  .sample-btn {
+    flex: 1 1 calc(50% - 6px);
+    text-align: center;
+    padding: 8px 10px;
+    min-height: 40px;
+  }
+
+  .btn-submit {
+    padding: 12px;
+    font-size: 0.95rem;
+    min-height: 46px;
+  }
+
+  .action-step-item {
+    padding: 8px 10px;
+    gap: 8px;
+  }
+
+  .step-number {
+    width: 20px;
+    height: 20px;
+    font-size: 0.75rem;
+  }
+
+  .step-text {
+    font-size: 0.82rem;
+  }
+
+  .guidance-section {
+    padding: 12px 10px;
+  }
+}
+
+@media (max-width: 360px) {
+  .leaf-disease-container {
+    padding: 10px 6px;
+  }
+
+  .header-title {
+    font-size: 1.25rem;
+  }
+
+  .sample-btn {
+    flex: 1 1 100%;
+  }
 }

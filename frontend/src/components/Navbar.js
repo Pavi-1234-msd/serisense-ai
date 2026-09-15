@@ -40,16 +40,16 @@ function Navbar() {
   }, []);
 
   const links = [
-    { path: '/dashboard', label: `📊 ${t('nav_dashboard') || 'Dashboard'}` },
-    { path: '/leaf-disease', label: t('nav_leaf') || '🌿 Leaf Disease' },
-    { path: '/climate', label: t('nav_climate') || '🌡️ Climate' },
-    { path: '/silkworm', label: t('nav_silkworm') || '🐛 Silkworm' },
-    { path: '/history', label: `📜 ${t('nav_history') || 'History'}` },
-    { path: '/profile', label: `👤 ${t('nav_profile') || 'Profile'}` },
+    { path: '/dashboard', icon: '📊', label: t('nav_dashboard', 'Dashboard') },
+    { path: '/leaf-disease', icon: '🌿', label: t('nav_leaf', 'Leaf Disease') },
+    { path: '/climate', icon: '🌡️', label: t('nav_climate', 'Climate Advisory') },
+    { path: '/silkworm', icon: '🐛', label: t('nav_silkworm', 'Silkworm Disease') },
+    { path: '/history', icon: '📜', label: t('nav_history', 'History') },
+    { path: '/profile', icon: '👤', label: t('nav_profile', 'Profile') },
   ];
 
   if (user && user.role === 'ADMIN') {
-    links.push({ path: '/admin', label: `🛡️ ${t('nav_admin') || 'Admin'}` });
+    links.push({ path: '/admin', icon: '🛡️', label: t('nav_admin', 'Admin') });
   }
 
   const handleLogout = () => {
@@ -60,11 +60,11 @@ function Navbar() {
   return (
     <nav className="navbar">
       <div className="navbar-container">
-        {/* Left: Brand Logo & Title */}
+        {/* Brand Section */}
         <div className="navbar-left">
-          <Link to={user ? "/dashboard" : "/"} className="navbar-brand">
-            <span className="brand-logo">🌿</span>
-            <span className="brand-name">SeriSense AI</span>
+          <Link to="/" className="navbar-brand" onClick={() => setMobileMenuOpen(false)}>
+            <span className="brand-logo">🐛</span>
+            <span className="brand-name">{t('app_title', 'SeriSense AI')}</span>
           </Link>
         </div>
 
@@ -73,7 +73,8 @@ function Navbar() {
           {/* Main Navigation Links */}
           <div className="navbar-nav-links">
             <Link to="/" className={`nav-link ${location.pathname === '/' ? 'active' : ''}`} onClick={() => setMobileMenuOpen(false)}>
-              🏠 Home
+              <span className="nav-item-icon">🏠</span>
+              <span className="nav-item-text">{t('nav_home', 'Home')}</span>
             </Link>
 
             {user && (
@@ -84,7 +85,8 @@ function Navbar() {
                   className={`nav-link ${location.pathname === link.path ? 'active' : ''}`}
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  {link.label}
+                  <span className="nav-item-icon">{link.icon}</span>
+                  <span className="nav-item-text">{link.label}</span>
                 </Link>
               ))
             )}
@@ -99,12 +101,12 @@ function Navbar() {
                   👨‍🌾 {user.full_name || user.email.split('@')[0]}
                 </span>
                 <button onClick={handleLogout} className="btn-logout-nav" title="Log out">
-                  Logout
+                  {t('logout', 'Logout')}
                 </button>
               </div>
             ) : (
               <button onClick={() => { setMobileMenuOpen(false); navigate('/login'); }} className="btn-farmer-login">
-                🔑 Login / Register
+                🔑 {t('login_register', 'Login / Register')}
               </button>
             )}
 

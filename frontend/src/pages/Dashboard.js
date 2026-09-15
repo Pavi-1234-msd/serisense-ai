@@ -148,22 +148,22 @@ function Dashboard() {
       {/* 1. Welcome & Primary Navigation */}
       <div className="welcome-banner">
         <div className="welcome-text">
-          <span className="app-subtitle-pill">{t('dashboard_subtitle') || 'Integrated Decision Support · Real-Time Cross-Module Assessment'}</span>
-          <h1>{t('welcome_back') || 'Welcome back'}, {user?.full_name || t('farmer_fallback') || 'Farmer'}! 👋</h1>
+          <span className="app-subtitle-pill">{t('dashboard_subtitle', 'Integrated Decision Support · Real-Time Cross-Module Assessment')}</span>
+          <h1>{t('welcome_back', 'Welcome back')}, {user?.full_name || t('farmer_fallback', 'Farmer')}! 👋</h1>
           <p className="farm-info">
-            {user?.farm_name ? `🏡 ${user.farm_name}` : (t('decision_support_system') || 'Sericulture Decision Support System')}
+            {user?.farm_name ? `🏡 ${user.farm_name}` : t('decision_support_system', 'SeriSense Farm Decision Support')}
             {user?.district ? ` • 📍 ${user.district}, ${user.state}` : ''}
           </p>
         </div>
         <div className="quick-actions-bar">
           <button onClick={() => navigate('/leaf-disease')} className="action-btn leaf-btn">
-            {t('btn_run_leaf_assessment') || '🌿 Run Leaf Assessment'}
+            {t('btn_run_leaf_assessment', '🌿 Run Leaf Assessment')}
           </button>
           <button onClick={() => navigate('/climate')} className="action-btn climate-btn">
-            {t('btn_check_climate_conditions') || '🌡️ Check Climate'}
+            {t('btn_check_climate_conditions', '🌡️ Check Climate Conditions')}
           </button>
           <button onClick={() => navigate('/silkworm')} className="action-btn silkworm-btn">
-            {t('btn_run_silkworm_assessment') || '🐛 Run Silkworm Assessment'}
+            {t('btn_run_silkworm_assessment', '🐛 Run Silkworm Assessment')}
           </button>
         </div>
       </div>
@@ -193,8 +193,8 @@ function Dashboard() {
           {/* 2. Farm Health Overview (Risk Engine Authoritative Section) */}
           <div className="dashboard-section farm-overview-section">
             <div className="section-head">
-              <h2>🌐 {t('farm_health_overview') || 'Farm Health Overview'}</h2>
-              <span className="source-tag">SeriSense Risk Engine</span>
+              <h2>🌐 {t('farm_health_overview', 'Farm Health Overview')}</h2>
+              <span className="source-tag">SeriSense Risk Assessment</span>
             </div>
 
             {isInsufficient ? (
@@ -202,16 +202,16 @@ function Dashboard() {
                 <div className="insufficient-header">
                   <span className="insufficient-icon">⚠️</span>
                   <div>
-                    <h3>{t('insufficient_farm_data_title') || 'INSUFFICIENT FARM DATA'}</h3>
-                    <p>{t('insufficient_farm_data_desc') || 'Complete at least one assessment to begin farm-level cross-module decision support.'}</p>
+                    <h3>{t('insufficient_farm_data_title', 'Insufficient Farm Data')}</h3>
+                    <p>{t('insufficient_farm_data_desc', 'Complete at least one assessment to begin farm-level decision support.')}</p>
                   </div>
                 </div>
                 <div className="missing-context-bar">
-                  <span>{t('missing_modules_notice') || 'Missing farm observation data for:'}</span>
+                  <span>{t('missing_modules_notice', 'Missing farm observation data for:')}</span>
                   <div className="context-pills-row">
-                    {!currentContext.leaf_available && <span className="ctx-pill missing">🌿 Leaf Health</span>}
-                    {!currentContext.climate_available && <span className="ctx-pill missing">🌡️ Climate Check</span>}
-                    {!currentContext.silkworm_available && <span className="ctx-pill missing">🐛 Silkworm Observation</span>}
+                    {!currentContext.leaf_available && <span className="ctx-pill missing">🌿 {t('snapshot_leaf_title', 'Leaf Health')}</span>}
+                    {!currentContext.climate_available && <span className="ctx-pill missing">🌡️ {t('snapshot_climate_title', 'Climate Conditions')}</span>}
+                    {!currentContext.silkworm_available && <span className="ctx-pill missing">🐛 {t('snapshot_silkworm_title', 'Silkworm Health')}</span>}
                   </div>
                 </div>
               </div>
@@ -219,16 +219,16 @@ function Dashboard() {
               <div className="farm-risk-card">
                 <div className="risk-overview-grid">
                   <div className="risk-score-display">
-                    <span className="score-label">{t('decision_support_index') || 'Decision-Support Priority Index'}</span>
+                    <span className="score-label">{t('decision_support_index', 'Farm Health Score')}</span>
                     <div className="score-value-row">
                       <span className="score-number">{riskScore}</span>
                       <span className="score-max">/ 100</span>
                     </div>
-                    <span className="not-prob-disclaimer">({t('not_a_probability') || 'Not a probability'})</span>
+                    <span className="not-prob-disclaimer">({t('not_a_probability', 'This score indicates management priority; it is not a probability.')})</span>
                   </div>
 
                   <div className="risk-level-display">
-                    <span className="score-label">{t('management_priority_label') || 'Management Priority'}</span>
+                    <span className="score-label">{t('management_priority_label', 'Management Priority')}</span>
                     <span className={`risk-badge badge-${riskLevel.toLowerCase()}`}>
                       {riskLevel}
                     </span>
@@ -238,19 +238,19 @@ function Dashboard() {
 
                 {/* Cross-Module Context Indicators */}
                 <div className="cross-module-context-panel">
-                  <span className="ctx-panel-title">📋 {t('cross_module_context_title') || 'Cross-Module Context Used'}:</span>
+                  <span className="ctx-panel-title">📋 {t('cross_module_context_title', 'Cross-Module Summary')}:</span>
                   <div className="context-pills-row">
                     <span className={`ctx-pill ${currentContext.leaf_available ? 'active' : 'inactive'}`}>
-                      🌿 {t('leaf_module_status') || 'Leaf Module'}: {currentContext.leaf_available ? (t('available_label') || 'Available') : (t('unavailable_label') || 'Not Available')}
+                      🌿 {t('leaf_module_status', 'Leaf Health Status')}: {currentContext.leaf_available ? t('available_label', 'Available') : t('unavailable_label', 'Not Available')}
                     </span>
                     <span className={`ctx-pill ${currentContext.climate_available ? 'active' : 'inactive'}`}>
-                      🌡️ {t('climate_module_status') || 'Climate Module'}: {currentContext.climate_available ? (t('available_label') || 'Available') : (t('unavailable_label') || 'Not Available')}
+                      🌡️ {t('climate_module_status', 'Climate Status')}: {currentContext.climate_available ? t('available_label', 'Available') : t('unavailable_label', 'Not Available')}
                     </span>
                     <span className={`ctx-pill ${currentContext.silkworm_available ? 'active' : 'inactive'}`}>
-                      🐛 {t('silkworm_module_status') || 'Silkworm Module'}: {currentContext.silkworm_available ? (t('available_label') || 'Available') : (t('unavailable_label') || 'Not Available')}
+                      🐛 {t('silkworm_module_status', 'Silkworm Health Status')}: {currentContext.silkworm_available ? t('available_label', 'Available') : t('unavailable_label', 'Not Available')}
                     </span>
                     <span className="ctx-pill neutral">
-                      📊 {t('history_records_analyzed') || 'Historical Events Analyzed'}: {currentContext.historical_events_analyzed || 0}
+                      📊 {t('history_records_analyzed', 'Records Analysed')}: {currentContext.historical_events_analyzed || 0}
                     </span>
                   </div>
                 </div>
@@ -261,7 +261,7 @@ function Dashboard() {
           {/* 3. Three Module Snapshots */}
           <div className="dashboard-section">
             <div className="section-head">
-              <h2>📊 {t('module_snapshots_title') || 'Module Health Snapshots'}</h2>
+              <h2>📊 {t('module_snapshots_title', 'Module Snapshots')}</h2>
             </div>
 
             <div className="snapshots-grid">
@@ -271,9 +271,9 @@ function Dashboard() {
                   <div className="card-title-wrap">
                     <span className="module-icon">🌿</span>
                     <div>
-                      <h3>{t('snapshot_leaf_title') || 'Latest Leaf Assessment'}</h3>
+                      <h3>{t('snapshot_leaf_title', 'Leaf Health')}</h3>
                       <span className="freshness-tag">
-                        {leafData?.created_at ? formatDate(leafData.created_at) : (t('data_freshness_none') || 'No assessments on record')}
+                        {leafData?.created_at ? formatDate(leafData.created_at) : t('data_freshness_none', 'No records yet')}
                       </span>
                     </div>
                   </div>
@@ -293,14 +293,14 @@ function Dashboard() {
                         : 'Foliage observation detected symptomatic fungal leaf pathology.'}
                     </p>
                     <button onClick={() => navigate('/leaf-disease')} className="snapshot-action-btn">
-                      {t('btn_run_leaf_assessment') || '🌿 Run Leaf Assessment'} →
+                      {t('btn_run_leaf_assessment', '🌿 Run Leaf Assessment')} →
                     </button>
                   </div>
                 ) : (
                   <div className="snapshot-body empty">
-                    <p>{t('no_leaf_scans_yet') || 'No leaf scans performed yet.'}</p>
+                    <p>{t('no_leaf_scans_yet', 'No leaf scans performed yet.')}</p>
                     <button onClick={() => navigate('/leaf-disease')} className="btn-small">
-                      {t('scan_now') || 'Scan Now'}
+                      {t('scan_now', 'Scan Now')}
                     </button>
                   </div>
                 )}
@@ -312,9 +312,9 @@ function Dashboard() {
                   <div className="card-title-wrap">
                     <span className="module-icon">🌡️</span>
                     <div>
-                      <h3>{t('snapshot_climate_title') || 'Latest Climate Advisory'}</h3>
+                      <h3>{t('snapshot_climate_title', 'Climate Conditions')}</h3>
                       <span className="freshness-tag">
-                        {climateData?.created_at ? formatDate(climateData.created_at) : (t('data_freshness_none') || 'No assessments on record')}
+                        {climateData?.created_at ? formatDate(climateData.created_at) : t('data_freshness_none', 'No records yet')}
                       </span>
                     </div>
                   </div>
@@ -339,14 +339,14 @@ function Dashboard() {
                         : 'Microclimate deviation requires rearing room ventilation or insulation.'}
                     </p>
                     <button onClick={() => navigate('/climate')} className="snapshot-action-btn">
-                      {t('btn_check_climate_conditions') || '🌡️ Check Climate'} →
+                      {t('btn_check_climate_conditions', '🌡️ Check Climate Conditions')} →
                     </button>
                   </div>
                 ) : (
                   <div className="snapshot-body empty">
-                    <p>{t('no_climate_checks_yet') || 'No climate checks performed yet.'}</p>
+                    <p>{t('no_climate_checks_yet', 'No climate checks performed yet.')}</p>
                     <button onClick={() => navigate('/climate')} className="btn-small">
-                      {t('check_climate') || 'Check Climate'}
+                      {t('check_climate', 'Check Climate')}
                     </button>
                   </div>
                 )}
@@ -358,9 +358,9 @@ function Dashboard() {
                   <div className="card-title-wrap">
                     <span className="module-icon">🐛</span>
                     <div>
-                      <h3>{t('snapshot_silkworm_title') || 'Latest Silkworm Assessment'}</h3>
+                      <h3>{t('snapshot_silkworm_title', 'Silkworm Health')}</h3>
                       <span className="freshness-tag">
-                        {silkwormData?.created_at ? formatDate(silkwormData.created_at) : (t('data_freshness_none') || 'No assessments on record')}
+                        {silkwormData?.created_at ? formatDate(silkwormData.created_at) : t('data_freshness_none', 'No records yet')}
                       </span>
                     </div>
                   </div>
@@ -379,14 +379,14 @@ function Dashboard() {
                       Pattern derived from observed rearing bed signs & Central Silk Board criteria.
                     </p>
                     <button onClick={() => navigate('/silkworm')} className="snapshot-action-btn">
-                      {t('btn_run_silkworm_assessment') || '🐛 Run Silkworm Assessment'} →
+                      {t('btn_run_silkworm_assessment', '🐛 Run Silkworm Assessment')} →
                     </button>
                   </div>
                 ) : (
                   <div className="snapshot-body empty">
-                    <p>{t('no_silkworm_diagnoses_yet') || 'No silkworm diagnoses performed yet.'}</p>
+                    <p>{t('no_silkworm_diagnoses_yet', 'No silkworm diagnoses performed yet.')}</p>
                     <button onClick={() => navigate('/silkworm')} className="btn-small">
-                      {t('diagnose_now') || 'Diagnose Now'}
+                      {t('diagnose_now', 'Diagnose Now')}
                     </button>
                   </div>
                 )}
@@ -402,9 +402,9 @@ function Dashboard() {
                 <div className="info-panel factors-panel">
                   <div className="panel-header">
                     <span className="panel-icon">🔍</span>
-                    <h3>{t('why_priority_title') || 'Why This Priority?'}</h3>
+                    <h3>{t('why_priority_title', 'Why This Needs Attention')}</h3>
                   </div>
-                  <p className="panel-sub">{t('priority_factors_title') || 'Contributing Stress Factors'}:</p>
+                  <p className="panel-sub">{t('priority_factors_title', 'Key Risk Factors')}:</p>
                   <ul className="factors-list">
                     {factors.map((factor, idx) => (
                       <li key={idx} className="factor-item">
@@ -421,7 +421,7 @@ function Dashboard() {
                 <div className="info-panel actions-panel">
                   <div className="panel-header">
                     <span className="panel-icon">⚡</span>
-                    <h3>{t('priority_actions_title') || 'Recommended Priority Actions'}</h3>
+                    <h3>{t('priority_actions_title', 'Recommended Actions')}</h3>
                   </div>
                   <p className="panel-sub">Authoritative operations sequence from Risk Engine:</p>
                   <ul className="actions-list">
@@ -435,7 +435,7 @@ function Dashboard() {
                   <div className="priority-actions-advisory">
                     <span className="advisory-icon">ℹ️</span>
                     <p className="advisory-text">
-                      {t('priority_actions_safety_advisory') || 'Field Advisory: Bed disinfectant formulations and dusting dosages reflect standard Central Silk Board package of practices. Always verify with your local sericulture extension officer before applying chemical bed treatments.'}
+                      {t('priority_actions_safety_advisory', 'Safety Advice: Bed disinfectant formulations and dusting dosages reflect standard Central Silk Board package of practices. Always verify with your local sericulture extension officer before applying chemical bed treatments.')}
                     </p>
                   </div>
                 </div>
@@ -449,28 +449,28 @@ function Dashboard() {
               <div className="stat-icon">🍃</div>
               <div className="stat-details">
                 <h3>{stats.total_leaf_scans}</h3>
-                <p>{t('stat_leaf_scans') || 'Leaf Scans'}</p>
+                <p>{t('stat_leaf_scans', 'Leaf Scans')}</p>
               </div>
             </div>
             <div className="stat-card" onClick={() => navigate('/history?tab=climate')}>
               <div className="stat-icon">🌡️</div>
               <div className="stat-details">
                 <h3>{stats.total_climate_checks}</h3>
-                <p>{t('stat_climate_checks') || 'Climate Checks'}</p>
+                <p>{t('stat_climate_checks', 'Climate Checks')}</p>
               </div>
             </div>
             <div className="stat-card" onClick={() => navigate('/history?tab=silkworm')}>
               <div className="stat-icon">🐛</div>
               <div className="stat-details">
                 <h3>{stats.total_silkworm_diagnoses}</h3>
-                <p>{t('stat_silkworm_diagnoses') || 'Silkworm Diagnoses'}</p>
+                <p>{t('stat_silkworm_diagnoses', 'Silkworm Assessments')}</p>
               </div>
             </div>
             <div className="stat-card" onClick={() => navigate('/history')}>
               <div className="stat-icon">📋</div>
               <div className="stat-details">
                 <h3>{stats.total_activities || (stats.total_leaf_scans + stats.total_climate_checks + stats.total_silkworm_diagnoses)}</h3>
-                <p>{t('stat_total_records') || 'Total Records'}</p>
+                <p>{t('stat_total_records', 'Total Records')}</p>
               </div>
             </div>
           </div>
@@ -478,9 +478,9 @@ function Dashboard() {
           {/* 6. Recent Farm Activity Timeline */}
           <div className="dashboard-section activity-timeline-section">
             <div className="section-head">
-              <h2>📜 {t('recent_activity_title') || 'Recent Farm Activity'}</h2>
+              <h2>📜 {t('recent_activity_title', 'Recent Activity')}</h2>
               <button onClick={() => navigate('/history')} className="text-link-btn">
-                {t('btn_view_full_history') || 'View Full History'} →
+                {t('btn_view_full_history', 'View Full History')} →
               </button>
             </div>
 
@@ -504,7 +504,7 @@ function Dashboard() {
               </div>
             ) : (
               <div className="empty-timeline-card">
-                <p>{t('data_freshness_none') || 'No assessments on record'}</p>
+                <p>{t('data_freshness_none', 'No records yet')}</p>
               </div>
             )}
           </div>

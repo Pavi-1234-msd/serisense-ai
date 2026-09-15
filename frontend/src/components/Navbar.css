@@ -251,29 +251,39 @@
   background: rgba(255, 255, 255, 0.15);
 }
 
+/* Desktop responsiveness and long-text handling */
+.nav-item-icon {
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.nav-item-text {
+  letter-spacing: 0.2px;
+}
+
 /* Medium Desktop (Compact font / spacing before hamburger) */
-@media (max-width: 1380px) {
+@media (max-width: 1440px) {
   .navbar-container {
-    padding: 0 10px;
-    gap: 5px;
+    padding: 0 12px;
+    gap: 8px;
   }
   .navbar-brand {
-    font-size: 1.12rem;
+    font-size: 1.15rem;
   }
   .nav-link {
     padding: 4px 6px;
-    font-size: 0.75rem;
+    font-size: 0.74rem;
   }
   .navbar-actions {
-    gap: 5px;
+    gap: 4px;
   }
   .farmer-badge-info {
     max-width: 90px;
   }
 }
 
-/* Mobile & Tablet Responsive Dropdown Menu */
-@media (max-width: 1180px) {
+/* Switch to mobile hamburger earlier so Tamil labels never overflow */
+@media (max-width: 1260px) {
   .mobile-menu-toggle {
     display: block;
   }
@@ -293,6 +303,9 @@
     border-top: 1px solid rgba(255, 255, 255, 0.12);
     z-index: 600;
     margin-left: 0;
+    max-height: calc(100vh - 64px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   .navbar-collapse.active {
@@ -310,6 +323,9 @@
     font-size: 0.95rem;
     border-radius: 8px;
     background: rgba(255, 255, 255, 0.05);
+    white-space: normal;
+    word-break: break-word;
+    min-height: 44px;
   }
 
   .navbar-actions {
@@ -326,13 +342,69 @@
   .btn-farmer-login,
   .demo-mode-pill {
     width: 100%;
+    box-sizing: border-box;
     justify-content: space-between;
     padding: 10px 14px;
     border-radius: 10px;
+    min-height: 44px;
   }
 
   .farmer-badge-info {
     max-width: none;
     font-size: 0.9rem;
+    overflow: visible;
+    text-overflow: unset;
+    white-space: normal;
+  }
+}
+
+/* Small mobile devices: 320px to 412px */
+@media (max-width: 480px) {
+  .navbar {
+    min-height: 56px;
+  }
+
+  .navbar-container {
+    padding: 0 10px;
+  }
+
+  .navbar-brand {
+    font-size: 1.05rem;
+  }
+
+  .brand-logo {
+    font-size: 1.2rem;
+  }
+
+  .navbar-collapse {
+    top: 56px;
+    padding: 12px 14px;
+    gap: 10px;
+    max-height: calc(100vh - 56px);
+  }
+
+  .nav-link {
+    font-size: 0.88rem;
+    padding: 9px 12px;
+  }
+
+  .user-profile-badge {
+    padding: 8px 12px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .farmer-badge-info {
+    font-size: 0.85rem;
+  }
+
+  .btn-logout-nav {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    min-height: 36px;
+  }
+
+  .lang-select {
+    font-size: 0.82rem;
   }
 }

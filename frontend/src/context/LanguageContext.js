@@ -13,8 +13,8 @@ export const LanguageProvider = ({ children }) => {
     localStorage.setItem('serisense_language', code);
   };
 
-  // Translation function t(key)
-  const t = (key) => {
+  // Translation function t(key, fallback)
+  const t = (key, fallback) => {
     if (translations[lang] && translations[lang][key]) {
       return translations[lang][key];
     }
@@ -22,7 +22,7 @@ export const LanguageProvider = ({ children }) => {
     if (translations.en && translations.en[key]) {
       return translations.en[key];
     }
-    return key;
+    return fallback !== undefined ? fallback : key;
   };
 
   return (

@@ -880,3 +880,92 @@
   font-weight: 500;
 }
 
+/* =========================================================
+   RESPONSIVE DESIGN BREAKPOINTS (320px - 768px)
+   ========================================================= */
+
+@media (max-width: 768px) {
+  .silkworm-grid {
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 1.2rem 1rem;
+  }
+
+  .header-badge {
+    margin-left: 0;
+  }
+
+  .diagnosis-banner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 16px;
+  }
+
+  .banner-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .btn-save-report,
+  .btn-share-report {
+    flex: 1;
+    text-align: center;
+    justify-content: center;
+    min-height: 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .silkworm-container {
+    padding: 14px 8px;
+  }
+
+  .assessment-card,
+  .report-card {
+    padding: 14px 10px;
+    border-radius: 12px;
+  }
+
+  .chips-grid {
+    gap: 6px;
+  }
+
+  .symptom-chip {
+    padding: 8px 10px;
+    font-size: 0.8rem;
+    min-height: 38px;
+  }
+
+  .btn-diagnose {
+    min-height: 46px;
+    font-size: 0.95rem;
+    padding: 12px;
+  }
+
+  .treatment-step-card {
+    padding: 10px 8px;
+  }
+
+  .summary-metrics-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 360px) {
+  .header-title {
+    font-size: 1.25rem;
+  }
+
+  .btn-save-report,
+  .btn-share-report {
+    flex: 1 1 100%;
+  }
+}
+

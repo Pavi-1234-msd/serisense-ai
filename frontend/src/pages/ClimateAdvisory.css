@@ -475,3 +475,85 @@
   background: #0369a1;
   transform: translateY(-1px);
 }
+
+/* =========================================================
+   RESPONSIVE DESIGN BREAKPOINTS (320px - 768px)
+   ========================================================= */
+
+@media (max-width: 768px) {
+  .climate-grid {
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 1.2rem 1rem;
+  }
+
+  .header-badge {
+    margin-left: 0;
+  }
+
+  .inputs-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .preset-buttons {
+    gap: 6px;
+  }
+
+  .btn-preset {
+    flex: 1 1 calc(50% - 6px);
+    text-align: center;
+    padding: 8px 10px;
+    min-height: 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .input-card,
+  .advisory-card {
+    padding: 1rem 0.85rem;
+    border-radius: 12px;
+  }
+
+  .target-values {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .btn-preset {
+    flex: 1 1 100%;
+    min-height: 44px;
+  }
+
+  .orange-btn {
+    min-height: 46px;
+    font-size: 0.92rem;
+  }
+
+  .status-banner {
+    padding: 12px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .variance-metrics-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 360px) {
+  .header-title {
+    font-size: 1.25rem;
+  }
+
+  .input-card,
+  .advisory-card {
+    padding: 0.85rem 0.7rem;
+  }
+}

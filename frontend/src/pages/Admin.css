@@ -120,3 +120,39 @@
   background: #fff;
   color: #e63946;
 }
+
+@media (max-width: 768px) {
+  .admin-container {
+    padding: 0 0.8rem;
+    margin: 1.2rem auto;
+  }
+  .admin-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.8rem;
+  }
+  .model-monitoring-section {
+    padding: 1.4rem 1rem;
+  }
+  .confusion-matrix-box {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-container {
+    padding: 0 0.5rem;
+    margin: 1rem auto;
+  }
+  .admin-stats-grid {
+    grid-template-columns: 1fr;
+    gap: 0.6rem;
+  }
+  .admin-header h1 {
+    font-size: 1.4rem;
+  }
+  .metrics-detail-grid {
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+  }
+}

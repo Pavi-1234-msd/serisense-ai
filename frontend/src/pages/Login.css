@@ -748,3 +748,49 @@
     padding: 36px 24px;
   }
 }
+
+@media (max-width: 480px) {
+  .login-container {
+    padding: 10px;
+  }
+
+  .seri-auth-card {
+    padding: 24px 16px;
+    border-radius: 12px;
+  }
+
+  .auth-mode-switch {
+    margin-bottom: 18px;
+  }
+
+  .mode-tab {
+    padding: 8px 10px;
+    font-size: 0.82rem;
+    min-height: 40px;
+  }
+
+  .demo-buttons {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .btn-demo-acc {
+    width: 100%;
+    min-height: 42px;
+  }
+
+  .btn-auth-submit {
+    min-height: 46px;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .seri-auth-card {
+    padding: 18px 12px;
+  }
+
+  .auth-title {
+    font-size: 1.25rem;
+  }
+}
